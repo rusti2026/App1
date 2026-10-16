@@ -2,10 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Building2, Check, Minus, Plus, Sparkles } from "lucide-react";
 import {
-  PRICING_TIERS,
-  priceForTeam,
+  Clock,
+  Gauge,
+  Layers,
+  Network,
+  Scale,
+  Users,
+} from "lucide-react";
+import {
+  WHY_CHOOSE_US,
+  TRUSTED_PARTNER,
+  DELIVERY_TIERS,
+  tierForSize,
   CONTACT,
 } from "@/lib/content";
 import { SectionHeading } from "./section-heading";
@@ -22,26 +31,27 @@ const MIN = 10;
 const MAX = 200;
 const STEP = 1;
 
+const REASON_ICONS = [Network, Clock, Gauge, Scale];
+
 export function PricingSection() {
   const [size, setSize] = useState(24);
-  const quote = priceForTeam(size);
+  const tier = tierForSize(size);
 
-  // Smooth tweened total for the "ticking" counter.
-  const [displayed, setDisplayed] = useState(quote.total);
+  // Smooth tweened count for the "ticking" counter.
+  const [displayed, setDisplayed] = useState(size);
   const rafRef = useRef<number | null>(null);
-  const fromRef = useRef(quote.total);
-  const startRef = useRef<number>(0);
+  const fromRef = useRef(size);
+  const startRef = useRef(0);
 
   useEffect(() => {
     fromRef.current = displayed;
     startRef.current = performance.now();
-    const target = quote.total;
+    const target = size;
     const duration = 420;
     const from = fromRef.current;
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - startRef.current) / duration);
-      // easeOutCubic
       const eased = 1 - Math.pow(1 - t, 3);
       const value = Math.round(from + (target - from) * eased);
       setDisplayed(value);
@@ -56,66 +66,86 @@ export function PricingSection() {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [quote.total]);
+  }, [size]);
 
   const adjust = (delta: number) =>
     setSize((s) => Math.min(MAX, Math.max(MIN, s + delta)));
 
-  const tierIdx = PRICING_TIERS.findIndex((t) => size >= t.min && size <= t.max);
+  const tierIdx = DELIVERY_TIERS.findIndex(
+    (t) => size >= t.min && size <= t.max,
+  );
 
   return (
     <section
-      id="pricing"
+      id="why-choose-us"
       className="relative scroll-mt-16 overflow-hidden bg-gradient-to-b from-secondary/40 to-background py-20 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="For Companies"
-          title="Pricing that scales with your cohort"
-          description="Drag the team-size slider to size your experience. The total ticks up and down in real time, and the per-head rate drops as your cohort grows."
+          eyebrow="Why Choose Us"
+          title="Bridge your software development needs with our engineering talent"
+          description="Why choose LSAI Quantum for your software development needs — a deep pool of engineering talent, time-zone aligned developers, quality without compromise, and flexible delivery models."
         />
 
+        {/* Two-column: reasons + scale slider */}
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-5">
-          {/* Slider card */}
+          {/* Reasons */}
           <div className="lg:col-span-3">
-            <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
-              <div className="flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                    Team size
-                  </p>
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-5xl font-semibold tabular-nums tracking-tight text-foreground">
-                      {size}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {WHY_CHOOSE_US.map((r, i) => {
+                const Icon = REASON_ICONS[i] ?? Network;
+                return (
+                  <div
+                    key={r.title}
+                    className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md"
+                  >
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <Icon className="h-5 w-5" />
                     </span>
-                    <span className="text-sm font-medium text-muted-foreground">
-                      participants
-                    </span>
+                    <p className="mt-3 text-base font-semibold text-foreground">
+                      {r.title}
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {r.body}
+                    </p>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => adjust(-5)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
-                    aria-label="Decrease by 5"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => adjust(5)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
-                    aria-label="Increase by 5"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Scale slider */}
+          <div className="lg:col-span-2">
+            <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-primary/30 bg-primary p-6 text-primary-foreground shadow-xl shadow-primary/10 sm:p-8">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/30 blur-3xl" />
+              <div className="relative flex items-center gap-2">
+                <Scale className="h-4 w-4 text-gold" />
+                <span className="text-xs font-medium uppercase tracking-[0.18em] text-primary-foreground/80">
+                  Scale your team up or down
+                </span>
               </div>
 
+              <div className="relative mt-3 flex items-end gap-1">
+                <motion.span
+                  key={Math.floor(displayed / 5)}
+                  className="tick-pop text-6xl font-semibold tabular-nums tracking-tight"
+                >
+                  {displayed}
+                </motion.span>
+                <span className="mb-2 text-sm font-medium text-primary-foreground/80">
+                  engineers
+                </span>
+              </div>
+              <p className="relative mt-1 text-xs text-primary-foreground/75">
+                {tier.tier} · flexible delivery models
+              </p>
+              <p className="relative mt-2 text-sm text-primary-foreground/90">
+                {tier.blurb}
+              </p>
+
               {/* Slider */}
-              <div className="relative mt-8">
+              <div className="relative mt-6">
                 <input
                   type="range"
                   min={MIN}
@@ -126,10 +156,14 @@ export function PricingSection() {
                   className="lsq-range w-full"
                   aria-label="Team size"
                 />
-                {/* Tick marks */}
+                <div className="mt-3 flex items-center justify-between text-[11px] text-primary-foreground/70">
+                  <span>{MIN} engineers</span>
+                  <span>{MAX}+ engineers</span>
+                </div>
+                {/* Tier ticks */}
                 <div className="relative mt-3 h-8">
-                  <div className="absolute inset-x-0 top-0 flex justify-between">
-                    {PRICING_TIERS.map((t, i) => {
+                  <div className="absolute inset-x-0 top-0">
+                    {DELIVERY_TIERS.map((t, i) => {
                       const pct = ((t.min - MIN) / (MAX - MIN)) * 100;
                       const passed = size >= t.min;
                       return (
@@ -140,30 +174,23 @@ export function PricingSection() {
                                 type="button"
                                 onClick={() => setSize(t.min)}
                                 style={{ left: `${pct}%` }}
-                                className={cn(
-                                  "absolute -translate-x-1/2 flex flex-col items-center gap-1",
-                                )}
+                                className="absolute -translate-x-1/2 flex flex-col items-center gap-1"
                               >
                                 <span
                                   className={cn(
                                     "h-2.5 w-0.5 rounded-full transition-all duration-300",
-                                    passed
-                                      ? "bg-gold"
-                                      : "bg-border",
+                                    passed ? "bg-gold" : "bg-primary-foreground/30",
                                   )}
                                 />
                                 <span
                                   className={cn(
-                                    "text-[10px] font-semibold transition-colors duration-300",
+                                    "text-[9px] font-semibold transition-colors duration-300",
                                     i === tierIdx
-                                      ? "text-foreground"
-                                      : "text-muted-foreground/70",
+                                      ? "text-primary-foreground"
+                                      : "text-primary-foreground/60",
                                   )}
                                 >
-                                  {t.tier}
-                                </span>
-                                <span className="text-[9px] text-muted-foreground">
-                                  {t.min}+
+                                  {t.tier.split(" ")[0]}
                                 </span>
                               </button>
                             </TooltipTrigger>
@@ -172,7 +199,7 @@ export function PricingSection() {
                                 {t.tier}
                               </span>{" "}
                               <span className="text-xs text-muted-foreground">
-                                · {t.min}–{t.max} people · ${t.perHead}/head
+                                · {t.min}–{t.max} engineers
                               </span>
                             </TooltipContent>
                           </Tooltip>
@@ -183,70 +210,25 @@ export function PricingSection() {
                 </div>
               </div>
 
-              {/* Tier chips */}
-              <div className="mt-6 flex flex-wrap gap-2">
-                {PRICING_TIERS.map((t, i) => (
+              <div className="relative mt-auto flex flex-wrap gap-2 pt-4">
+                {DELIVERY_TIERS.map((t, i) => (
                   <button
                     key={t.tier}
                     type="button"
                     onClick={() => setSize(t.min)}
                     className={cn(
-                      "rounded-full border px-3 py-1 text-xs font-medium transition-all",
+                      "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all",
                       i === tierIdx
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                        ? "border-gold bg-gold/15 text-primary-foreground"
+                        : "border-primary-foreground/20 text-primary-foreground/70 hover:border-primary-foreground/40",
                     )}
                   >
-                    {t.tier} · ${t.perHead}/head
+                    {t.tier}
                   </button>
                 ))}
               </div>
-            </div>
-          </div>
 
-          {/* Total card */}
-          <div className="lg:col-span-2">
-            <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-primary/30 bg-primary text-primary-foreground p-6 shadow-xl shadow-primary/10 sm:p-8">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gold/30 blur-3xl" />
-              <div className="relative flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-gold" />
-                <span className="text-xs font-medium uppercase tracking-[0.18em] text-primary-foreground/80">
-                  Estimated total
-                </span>
-              </div>
-
-              <div className="relative mt-3 flex items-end gap-1">
-                <span className="mb-2 text-2xl font-semibold text-primary-foreground/80">
-                  $
-                </span>
-                <motion.span
-                  key={Math.floor(displayed / 100)}
-                  className="tick-pop inline-block text-6xl font-semibold tabular-nums tracking-tight"
-                >
-                  {displayed.toLocaleString()}
-                </motion.span>
-              </div>
-              <p className="relative mt-1 text-xs text-primary-foreground/70">
-                {quote.tier} tier · ${quote.perHead}/head · all-in for {size}{" "}
-                participants
-              </p>
-
-              <div className="relative mt-6 space-y-2 border-t border-primary-foreground/15 pt-4 text-sm">
-                <Row
-                  label={`Scenario × ${size} @ $${quote.perHead}/head`}
-                  value={`$${quote.subtotal.toLocaleString()}`}
-                />
-                <Row
-                  label="Lead facilitation & rooms"
-                  value={`$${quote.facilitation.toLocaleString()}`}
-                />
-                <Row
-                  label="Branded dossier"
-                  value={`$${quote.brandedDossier.toLocaleString()}`}
-                />
-              </div>
-
-              <div className="relative mt-auto pt-6">
+              <div className="relative mt-5">
                 <Button
                   size="lg"
                   onClick={() =>
@@ -256,8 +238,8 @@ export function PricingSection() {
                   }
                   className="w-full rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
                 >
-                  <Building2 className="mr-2 h-4 w-4" />
-                  Request this quote
+                  <Users className="mr-2 h-4 w-4" />
+                  Start a rapid discovery
                 </Button>
                 <p className="mt-3 text-center text-[11px] text-primary-foreground/70">
                   {CONTACT.hotline} · {CONTACT.phone}
@@ -267,35 +249,32 @@ export function PricingSection() {
           </div>
         </div>
 
-        {/* Inclusions row */}
-        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {[
-            {
-              t: "Time-zone aligned facilitators",
-              d: "Local hosts in your region, no awkward hand-offs.",
-            },
-            {
-              t: "Measurable outcome scorecards",
-              d: "Collaboration, leadership & creativity metrics per cohort.",
-            },
-            {
-              t: "Flexible delivery models",
-              d: "Scale rooms up or down to 100+ without re-scoping.",
-            },
-          ].map((f) => (
-            <div
-              key={f.t}
-              className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4"
-            >
-              <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Check className="h-3.5 w-3.5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-foreground">{f.t}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{f.d}</p>
+        {/* Trusted Technology Partner grid */}
+        <div className="mt-12">
+          <div className="flex items-center gap-3">
+            <Layers className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">
+              Your Trusted Technology Partner
+            </h3>
+          </div>
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {TRUSTED_PARTNER.map((f) => (
+              <div
+                key={f.title}
+                className="rounded-2xl border border-border bg-card p-5"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+                  <p className="text-sm font-semibold text-foreground">
+                    {f.title}
+                  </p>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {f.body}
+                </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
@@ -305,7 +284,7 @@ export function PricingSection() {
           appearance: none;
           height: 6px;
           border-radius: 999px;
-          background: linear-gradient(to right, var(--primary) 0%, var(--primary) ${((size - MIN) / (MAX - MIN)) * 100}%, var(--border) ${((size - MIN) / (MAX - MIN)) * 100}%, var(--border) 100%);
+          background: linear-gradient(to right, var(--gold) 0%, var(--gold) ${((size - MIN) / (MAX - MIN)) * 100}%, rgba(255,255,255,0.18) ${((size - MIN) / (MAX - MIN)) * 100}%, rgba(255,255,255,0.18) 100%);
           outline: none;
         }
         .lsq-range::-webkit-slider-thumb {
@@ -315,8 +294,8 @@ export function PricingSection() {
           height: 22px;
           border-radius: 999px;
           background: var(--background);
-          border: 3px solid var(--primary);
-          box-shadow: 0 4px 12px -2px var(--primary);
+          border: 3px solid var(--gold);
+          box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3);
           cursor: pointer;
           transition: transform .15s ease;
         }
@@ -326,21 +305,10 @@ export function PricingSection() {
           height: 22px;
           border-radius: 999px;
           background: var(--background);
-          border: 3px solid var(--primary);
+          border: 3px solid var(--gold);
           cursor: pointer;
         }
       `}</style>
     </section>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <span className="text-primary-foreground/75">{label}</span>
-      <span className="font-semibold tabular-nums text-primary-foreground">
-        {value}
-      </span>
-    </div>
   );
 }

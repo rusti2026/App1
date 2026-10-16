@@ -8,9 +8,9 @@ import { CONTACT } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 
 const LINKS = [
-  { href: "#experiences", label: "Experiences" },
-  { href: "#pricing", label: "For Companies" },
-  { href: "#customization", label: "Customization" },
+  { href: "#what-we-do", label: "What We Do" },
+  { href: "#why-choose-us", label: "Why Choose Us" },
+  { href: "#customization", label: "Engagement" },
   { href: "#case-studies", label: "Case Studies" },
 ];
 
@@ -56,7 +56,7 @@ export function SiteNav() {
               LSAI <span className="text-gold">Quantum</span>
             </span>
             <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-              Team Experiences
+              Engineering Partner
             </span>
           </span>
         </button>
@@ -87,7 +87,7 @@ export function SiteNav() {
             onClick={() => handleNav("#quote")}
             className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            Request a Quote
+            Book Appointment
           </Button>
         </div>
 
@@ -125,7 +125,7 @@ export function SiteNav() {
                 onClick={() => handleNav("#quote")}
                 className="mt-2 w-full rounded-full bg-primary text-primary-foreground"
               >
-                Request a Quote
+                Book Appointment
               </Button>
             </div>
           </motion.div>

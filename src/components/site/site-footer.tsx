@@ -1,19 +1,26 @@
 "use client";
 
-import { Phone, Mail, MapPin, Sparkles, ArrowUp } from "lucide-react";
-import { CONTACT, TEAM, TRUSTED_BY } from "@/lib/content";
+import {
+  ArrowUp,
+  Globe,
+  Mail,
+  MapPin,
+  Phone,
+  Sparkles,
+} from "lucide-react";
+import { CONTACT, TEAM, TRUSTED_BY, FOOTER_LINKS } from "@/lib/content";
 
-const QUICK = [
-  { href: "#experiences", label: "Experiences" },
-  { href: "#pricing", label: "For Companies" },
-  { href: "#customization", label: "Customization" },
-  { href: "#case-studies", label: "Case Studies" },
-  { href: "#quote", label: "Request a Quote" },
-];
+// Map LSAI's real footer links to the closest in-page section anchor.
+const LINK_TARGETS: Record<string, string> = {
+  "Who We Are": "#team",
+  "Case Study": "#case-studies",
+  Policies: "#quote",
+  FAQ: "#why-choose-us",
+  "Contact Us": "#quote",
+};
 
 export function SiteFooter() {
-  const toTop = () =>
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const nav = (href: string) => {
     const el = document.querySelector(href);
@@ -36,14 +43,14 @@ export function SiteFooter() {
                   LSAI <span className="text-gold">Quantum</span>
                 </span>
                 <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                  Team Experiences
+                  Engineering Partner
                 </span>
               </div>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Engineering partner for AI, data, cyber security, cloud &amp;
-              digital transformation — now designing immersive team-building
-              for enterprise cohorts.
+              Empowering businesses with AI-driven solutions. Engineering
+              partner for AI, data, cyber security, cloud &amp; digital
+              transformation.
             </p>
 
             <div className="mt-5 space-y-2 text-sm">
@@ -60,6 +67,13 @@ export function SiteFooter() {
               >
                 <Mail className="h-4 w-4 text-primary" />
                 {CONTACT.email}
+              </a>
+              <a
+                href={CONTACT.websiteHref}
+                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Globe className="h-4 w-4 text-primary" />
+                {CONTACT.website}
               </a>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="mt-0.5 h-4 w-4 flex-none text-primary" />
@@ -78,14 +92,14 @@ export function SiteFooter() {
               Quick Links
             </p>
             <ul className="mt-4 space-y-2.5">
-              {QUICK.map((l) => (
-                <li key={l.href}>
+              {FOOTER_LINKS.map((l) => (
+                <li key={l}>
                   <button
                     type="button"
-                    onClick={() => nav(l.href)}
+                    onClick={() => nav(LINK_TARGETS[l] ?? "#quote")}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    {l.label}
+                    {l}
                   </button>
                 </li>
               ))}
@@ -112,7 +126,7 @@ export function SiteFooter() {
           {/* Trusted by */}
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
-              Trusted By
+              Clients
             </p>
             <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
               {TRUSTED_BY.map((c) => (
@@ -129,8 +143,7 @@ export function SiteFooter() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
-            © {new Date().getFullYear()} LSAI Quantum Inc., All Rights
-            Reserved.
+            © Copyright 2025 - LSAI Quantum Inc., All Right Reserved.
           </p>
           <div className="flex items-center gap-3">
             <span className="text-[11px] text-muted-foreground">

@@ -85,7 +85,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur"
           >
             <Compass className="h-3.5 w-3.5 text-primary" />
-            Engineering Partner — Team Skill Outcomes
+            Engineering Partner — AI, Data, Cyber Security, Cloud &amp; Digital
           </motion.div>
 
           <motion.h1
@@ -94,10 +94,10 @@ export function HeroSection() {
             transition={{ duration: 0.55, delay: 0.06 }}
             className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
           >
-            Empowering teams with{" "}
+            Empowering businesses with{" "}
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-primary via-primary to-gold bg-clip-text text-transparent">
-                immersive mystery
+                AI-driven solutions
               </span>
               <svg
                 aria-hidden
@@ -114,7 +114,7 @@ export function HeroSection() {
                 />
               </svg>
             </span>{" "}
-            experiences.
+            that redefine industries.
           </motion.h1>
 
           <motion.p
@@ -123,10 +123,9 @@ export function HeroSection() {
             transition={{ duration: 0.55, delay: 0.14 }}
             className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            From engineered escape rooms to boardroom whodunits, LSAI Quantum
-            designs measurable team-building for enterprise cohorts of 10–100+.
-            Each scenario maps to a team skill: collaboration, leadership or
-            creativity.
+            From intelligent automation to predictive analytics, we create
+            AI-driven solutions that redefine industries. Engineering partner
+            for AI, data, cyber security, cloud &amp; digital transformation.
           </motion.p>
 
           <motion.div
@@ -139,12 +138,12 @@ export function HeroSection() {
               size="lg"
               onClick={() =>
                 document
-                  .querySelector("#experiences")
+                  .querySelector("#what-we-do")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
               className="group rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90"
             >
-              Explore Experiences
+              Explore Our Services
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
             <Button
@@ -158,7 +157,7 @@ export function HeroSection() {
               className="rounded-full border-border bg-card/60 backdrop-blur hover:border-gold/60 hover:text-foreground"
             >
               <FileSearch className="mr-2 h-4 w-4 text-gold" />
-              Free Rapid Discovery
+              Free Rapid Discovery - POC
             </Button>
           </motion.div>
 
@@ -174,7 +173,7 @@ export function HeroSection() {
             </span>
             <span className="inline-flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              Time-zone aligned facilitators
+              Time-zone aligned developers
             </span>
           </motion.div>
         </motion.div>
@@ -205,25 +204,25 @@ export function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
             </motion.div>
 
-            {/* Floating clue card — top right */}
+            {/* Floating service card — top right */}
             <FloatingClue
               style={{ x: fgX, y: fgY }}
               className="-right-4 -top-5 sm:-right-6"
               icon={<Sparkles className="h-3.5 w-3.5" />}
-              kicker="Scenario"
-              title="The Quantum Vault"
-              meta="collaboration · 90m"
+              kicker="Service"
+              title="AI Transformation"
+              meta="ai & data"
               accent="gold"
             />
 
-            {/* Floating dossier card — bottom left */}
+            {/* Floating solution brief card — bottom left */}
             <FloatingClue
               style={{ x: midX, y: midY }}
               className="-bottom-6 -left-4 sm:-left-6"
               icon={<FileSearch className="h-3.5 w-3.5" />}
-              kicker="Branded dossier"
+              kicker="Solution Brief"
               title="Acme Corp × LSAI"
-              meta="custom scenario"
+              meta="product driven engagement"
               accent="primary"
             />
           </motion.div>
@@ -307,7 +306,7 @@ function TrustedMarquee() {
     <div className="relative border-t border-border/60 bg-background/60 py-4">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground sm:px-6 lg:px-8">
         <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/70">
-          Trusted by enterprise teams
+          Trusted by enterprise clients
         </span>
         {items.map((c) => (
           <span key={c} className="text-foreground/55">

@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Quote, TrendingUp } from "lucide-react";
-import { CASE_STUDIES, type CaseStudy } from "@/lib/content";
+import { ChevronDown, Dna, Quote } from "lucide-react";
+import {
+  ALPHAFOLD_TIMELINE,
+  TESTIMONIALS,
+  type Testimonial,
+} from "@/lib/content";
 import { SectionHeading } from "./section-heading";
 import { cn } from "@/lib/utils";
 
-const ACCENT: Record<CaseStudy["accent"], { dot: string; chip: string; line: string }> =
+const ACCENT: Record<Testimonial["accent"], { dot: string; chip: string; line: string }> =
   {
     primary: {
       dot: "bg-primary",
@@ -27,7 +31,7 @@ const ACCENT: Record<CaseStudy["accent"], { dot: string; chip: string; line: str
   };
 
 export function CaseStudiesSection() {
-  const [openId, setOpenId] = useState<string | null>(CASE_STUDIES[0].id);
+  const [openId, setOpenId] = useState<string | null>(TESTIMONIALS[0].id);
 
   return (
     <section
@@ -37,38 +41,92 @@ export function CaseStudiesSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Case Studies"
-          title="Outcomes our corporate clients repeat"
-          description="Click a card to expand the testimonial. Each case file pairs a measurable outcome with the engineering partners who ran it."
+          title="AI & Digital Transformation case studies — Healthcare"
+          description="A milestone view of breakthrough AI in healthcare, followed by what our enterprise clients say about working with LSAI Quantum."
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
-          {CASE_STUDIES.map((cs) => {
-            const open = openId === cs.id;
-            return (
-              <CaseCard
-                key={cs.id}
-                cs={cs}
-                open={open}
-                onToggle={() => setOpenId(open ? null : cs.id)}
-              />
-            );
-          })}
+        {/* AlphaFold timeline */}
+        <div className="mt-12">
+          <div className="flex items-center gap-3">
+            <Dna className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">
+              Healthcare: DeepMind&apos;s AlphaFold
+            </h3>
+          </div>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            Protein folding — predicting the 3D shape of proteins from their
+            amino-acid sequences — was a grand challenge in biology. This
+            process is crucial for understanding diseases and developing new
+            drugs.
+          </p>
+
+          {/* Horizontal timeline */}
+          <div className="mt-6 overflow-x-auto fancy-scroll pb-3">
+            <div className="flex min-w-[760px] gap-0">
+              {ALPHAFOLD_TIMELINE.map((m, i) => (
+                <div
+                  key={m.year}
+                  className="relative flex-1 border-l border-border pl-5 pr-4 first:border-l-0 first:pl-0"
+                >
+                  {/* node */}
+                  <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-gold ring-4 ring-background" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {m.year}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-foreground">
+                    {m.title}
+                  </p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                    {m.body}
+                  </p>
+                  {i === ALPHAFOLD_TIMELINE.length - 1 ? (
+                    <p className="mt-2 inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                      Impact: accelerated drug discovery
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Testimonials */}
+        <div className="mt-14">
+          <div className="flex items-center gap-3">
+            <Quote className="h-5 w-5 text-gold" />
+            <h3 className="text-lg font-semibold text-foreground">
+              Client success stories
+            </h3>
+          </div>
+          <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+            {TESTIMONIALS.map((t) => {
+              const open = openId === t.id;
+              return (
+                <TestimonialCard
+                  key={t.id}
+                  t={t}
+                  open={open}
+                  onToggle={() => setOpenId(open ? null : t.id)}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function CaseCard({
-  cs,
+function TestimonialCard({
+  t,
   open,
   onToggle,
 }: {
-  cs: CaseStudy;
+  t: Testimonial;
   open: boolean;
   onToggle: () => void;
 }) {
-  const a = ACCENT[cs.accent];
+  const a = ACCENT[t.accent];
   return (
     <motion.div
       layout
@@ -78,10 +136,11 @@ function CaseCard({
       transition={{ duration: 0.45 }}
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-3xl border bg-card transition-colors",
-        open ? "border-primary/40 shadow-xl shadow-primary/5" : "border-border hover:border-primary/40",
+        open
+          ? "border-primary/40 shadow-xl shadow-primary/5"
+          : "border-border hover:border-primary/40",
       )}
     >
-      {/* Top accent line */}
       <div className={cn("h-1 w-full bg-gradient-to-r", a.line)} />
 
       <button
@@ -94,32 +153,15 @@ function CaseCard({
           <div className="flex items-center gap-2">
             <span className={cn("h-2 w-2 rounded-full", a.dot)} />
             <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              {cs.industry}
+              {t.industry}
             </span>
           </div>
           <p className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-            {cs.client}
+            {t.client}
           </p>
-          <p className="text-sm text-muted-foreground">{cs.scenario}</p>
-          <p className="mt-1 text-[13px] font-medium text-foreground/80">
-            {cs.headline}
+          <p className="text-sm text-muted-foreground">
+            Read the client testimonial
           </p>
-
-          {/* Metric chips */}
-          <div className="mt-3 flex flex-wrap gap-2">
-            {cs.metrics.map((m) => (
-              <span
-                key={m.label}
-                className={cn(
-                  "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold",
-                  a.chip,
-                )}
-              >
-                <TrendingUp className="h-3 w-3" />
-                {m.value} {m.label}
-              </span>
-            ))}
-          </div>
         </div>
 
         <span
@@ -159,21 +201,20 @@ function CaseCard({
                 &rdquo;
               </motion.span>
 
-              <div className="relative pl-8 pr-8">
-                <Quote className="absolute -left-1 top-1 h-4 w-4 text-gold/50" />
+              <div className="relative px-8">
                 <p className="text-[15px] leading-relaxed text-foreground/90">
-                  {cs.quote}
+                  {t.quote}
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-xs font-bold text-foreground">
-                    {cs.speaker.slice(0, 1)}
+                    {t.client.slice(0, 1)}
                   </span>
                   <div>
                     <p className="text-sm font-semibold text-foreground">
-                      {cs.speaker}
+                      {t.client}
                     </p>
                     <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                      {cs.role} · cohort {cs.cohort}
+                      {t.industry}
                     </p>
                   </div>
                 </div>

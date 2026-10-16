@@ -10,7 +10,7 @@ import {
   Upload,
   Users,
 } from "lucide-react";
-import { EXPERIENCES, SKILLS, type SkillKey } from "@/lib/content";
+import { PRODUCTS, type Product } from "@/lib/content";
 import { SectionHeading } from "./section-heading";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -25,27 +25,26 @@ export function CustomizationSection() {
   const [company, setCompany] = useState("Acme Corp");
   const [logoDataUrl, setLogoDataUrl] = useState<string | null>(null);
   const [logoStyle, setLogoStyle] = useState("monogram");
-  const [scenarioId, setScenarioId] = useState(EXPERIENCES[0].id);
-  const [skill, setSkill] = useState<SkillKey>("collaboration");
+  const [productId, setProductId] = useState(PRODUCTS[0].id);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const scenario = useMemo(
-    () => EXPERIENCES.find((e) => e.id === scenarioId)!,
-    [scenarioId],
+  const product = useMemo(
+    () => PRODUCTS.find((p) => p.id === productId)!,
+    [productId],
   );
 
   const initials = useMemo(() => {
     const parts = company.trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) return "QC";
+    if (parts.length === 0) return "LQ";
     if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }, [company]);
 
-  const dossierId = useMemo(() => {
+  const briefId = useMemo(() => {
     const slug = company.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    const rnd = (company.length * 37 + scenarioId.length * 7 + 101) % 9000;
+    const rnd = (company.length * 37 + productId.length * 7 + 101) % 9000;
     return `LSQ-${slug || "client"}-${(1000 + rnd).toString()}`;
-  }, [company, scenarioId]);
+  }, [company, productId]);
 
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -64,9 +63,9 @@ export function CustomizationSection() {
       <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Customization"
-          title="A branded dossier for every client"
-          description="Type a company name, drop in a logo, and pick a scenario. We generate a confidential case file your participants unwrap on game night."
+          eyebrow="Product Driven Engagement"
+          title="A branded solution brief for every client"
+          description="At the heart of our company is a team of passionate innovators, engineers, and strategists dedicated to transforming businesses with cutting-edge technology — and our focus on product driven engagement."
         />
 
         <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-5">
@@ -122,38 +121,18 @@ export function CustomizationSection() {
                 </div>
               </Field>
 
-              <Field label="Scenario">
+              <Field label="Engagement type">
                 <select
-                  value={scenarioId}
-                  onChange={(e) => setScenarioId(e.target.value)}
+                  value={productId}
+                  onChange={(e) => setProductId(e.target.value)}
                   className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary"
                 >
-                  {EXPERIENCES.map((e) => (
-                    <option key={e.id} value={e.id}>
-                      {e.title} — {e.subtitle}
+                  {PRODUCTS.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title}
                     </option>
                   ))}
                 </select>
-              </Field>
-
-              <Field label="Team-skill focus">
-                <div className="flex flex-wrap gap-2">
-                  {SKILLS.map((s) => (
-                    <button
-                      key={s.key}
-                      type="button"
-                      onClick={() => setSkill(s.key)}
-                      className={cn(
-                        "rounded-full border px-3 py-1.5 text-xs font-medium transition-all",
-                        skill === s.key
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
-                      )}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
               </Field>
 
               <div className="mt-5 flex items-center gap-2 rounded-xl bg-secondary/60 p-3 text-xs text-muted-foreground">
@@ -164,16 +143,15 @@ export function CustomizationSection() {
             </div>
           </div>
 
-          {/* Dossier preview */}
+          {/* Solution brief preview */}
           <div className="lg:col-span-3">
-            <Dossier
+            <SolutionBrief
               company={company || "Your Company"}
               initials={initials}
               logoDataUrl={logoDataUrl}
               logoStyle={logoStyle}
-              scenario={scenario}
-              skill={skill}
-              dossierId={dossierId}
+              product={product}
+              briefId={briefId}
             />
           </div>
         </div>
@@ -199,24 +177,21 @@ function Field({
   );
 }
 
-function Dossier({
+function SolutionBrief({
   company,
   initials,
   logoDataUrl,
   logoStyle,
-  scenario,
-  skill,
-  dossierId,
+  product,
+  briefId,
 }: {
   company: string;
   initials: string;
   logoDataUrl: string | null;
   logoStyle: string;
-  scenario: (typeof EXPERIENCES)[number];
-  skill: SkillKey;
-  dossierId: string;
+  product: Product;
+  briefId: string;
 }) {
-  const skillLabel = SKILLS.find((s) => s.key === skill)!.label;
   return (
     <motion.div
       layout
@@ -229,10 +204,10 @@ function Dossier({
         ))}
       </div>
 
-      {/* Confidential stamp */}
-      <div className="absolute right-6 top-6 -rotate-6">
-        <div className="rounded-md border-2 border-rose/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-rose/80">
-          Confidential
+      {/* Solution brief stamp */}
+      <div className="absolute right-6 top-6 -rotate-3">
+        <div className="rounded-md border-2 border-primary/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/80">
+          Solution Brief
         </div>
       </div>
 
@@ -241,13 +216,13 @@ function Dossier({
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-              LSAI Quantum · Case File
+              LSAI Quantum · Engagement Brief
             </p>
             <h3 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-              {scenario.title}
+              {product.title}
             </h3>
             <p className="text-sm font-medium text-muted-foreground">
-              {scenario.subtitle}
+              Product Driven Engagement
             </p>
           </div>
           <LogoBadge
@@ -259,38 +234,20 @@ function Dossier({
 
         {/* Meta strip */}
         <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1 border-y border-dashed border-border py-2 text-[11px] font-medium text-muted-foreground">
-          <Meta label="Dossier" value={dossierId} />
+          <Meta label="Brief ID" value={briefId} />
           <Meta label="Prepared for" value={company} />
-          <Meta label="Skill focus" value={skillLabel} />
-          <Meta label="Duration" value={scenario.duration} />
+          <Meta label="Engagement" value={product.title} />
+          <Meta label="Partner" value="LSAI Quantum" />
         </div>
 
-        {/* Mission brief */}
+        {/* Approach */}
         <div className="mt-5">
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Mission brief
+            Our approach
           </p>
           <p className="mt-2 text-sm leading-relaxed text-foreground/90">
-            {scenario.synopsis}
+            {product.body}
           </p>
-        </div>
-
-        {/* Outcomes */}
-        <div className="mt-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Measured outcomes
-          </p>
-          <ul className="mt-2 grid grid-cols-1 gap-1.5 sm:grid-cols-3">
-            {scenario.outcomes.map((o) => (
-              <li
-                key={o}
-                className="flex items-center gap-1.5 rounded-md bg-background/70 px-2 py-1.5 text-[12px] font-medium text-foreground"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-                {o}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Footer with logo watermark */}
@@ -299,9 +256,7 @@ function Dossier({
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Authorized by
             </p>
-            <p className="text-sm font-semibold text-foreground">
-              {company}
-            </p>
+            <p className="text-sm font-semibold text-foreground">{company}</p>
             <p className="text-[11px] text-muted-foreground">
               LSAI Quantum · Engineering Partner
             </p>
@@ -311,7 +266,7 @@ function Dossier({
               <Users className="h-4 w-4" />
             </span>
             <span className="text-[11px] font-medium text-muted-foreground">
-              {scenario.capacity}
+              Flexible delivery models
             </span>
           </div>
           {/* Big faint logo watermark */}
@@ -320,34 +275,49 @@ function Dossier({
           </div>
         </div>
 
-        {/* Red string motif */}
+        {/* Subtle network connector motif (replaces detective red-string) */}
         <svg
           aria-hidden
-          className="pointer-events-none absolute right-10 top-24 h-40 w-40 opacity-70"
+          className="pointer-events-none absolute right-8 top-24 h-40 w-40 opacity-60"
           viewBox="0 0 200 200"
         >
-          <path
-            d="M20 20 L120 40 L60 90 L160 110 L40 160 L180 180"
-            fill="none"
-            stroke="var(--rose)"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
           {[
             [20, 20],
             [120, 40],
-            [60, 90],
+            [60, 95],
             [160, 110],
             [40, 160],
-            [180, 180],
+            [180, 175],
+          ].map(([cx, cy], i, arr) => {
+            const next = arr[(i + 1) % arr.length];
+            return (
+              <line
+                key={`l${i}`}
+                x1={cx}
+                y1={cy}
+                x2={next[0]}
+                y2={next[1]}
+                stroke="var(--primary)"
+                strokeWidth="1"
+                opacity="0.35"
+              />
+            );
+          })}
+          {[
+            [20, 20],
+            [120, 40],
+            [60, 95],
+            [160, 110],
+            [40, 160],
+            [180, 175],
           ].map(([cx, cy], i) => (
             <circle
-              key={i}
+              key={`n${i}`}
               cx={cx}
               cy={cy}
               r="4"
-              fill="var(--rose)"
-              opacity="0.8"
+              fill="var(--gold)"
+              opacity="0.85"
             />
           ))}
         </svg>
@@ -368,7 +338,6 @@ function LogoBadge({
   if (dataUrl) {
     return (
       <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-border bg-background p-1.5 shadow-sm">
-        {/* next/no-img-element intentionally disabled: user-uploaded avatar */}
         <img
           src={dataUrl}
           alt="Company logo"

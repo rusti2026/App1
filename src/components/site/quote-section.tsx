@@ -6,17 +6,19 @@ import {
   ArrowRight,
   CalendarCheck,
   CheckCircle2,
+  Globe,
   Mail,
   MapPin,
   Phone,
   Sparkles,
 } from "lucide-react";
-import { CONTACT } from "@/lib/content";
+import { CONTACT, SERVICES, WHY_CHOOSE_US } from "@/lib/content";
 import { SectionHeading } from "./section-heading";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 type Status = "idle" | "submitting" | "done";
+
+const SERVICE_OPTIONS = ["Help me choose", ...SERVICES.map((s) => s.title)];
 
 export function QuoteSection() {
   const [status, setStatus] = useState<Status>("idle");
@@ -25,7 +27,7 @@ export function QuoteSection() {
     email: "",
     company: "",
     teamSize: "24",
-    scenario: "Help me choose",
+    service: "Help me choose",
     message: "",
   });
 
@@ -36,7 +38,6 @@ export function QuoteSection() {
     e.preventDefault();
     if (status === "submitting") return;
     setStatus("submitting");
-    // Simulate confident async dispatch
     window.setTimeout(() => setStatus("done"), 850);
   };
 
@@ -47,7 +48,7 @@ export function QuoteSection() {
       email: "",
       company: "",
       teamSize: "24",
-      scenario: "Help me choose",
+      service: "Help me choose",
       message: "",
     });
   };
@@ -62,9 +63,9 @@ export function QuoteSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Request a Quote"
+          eyebrow="Schedule a Consultation"
           title="Book your free rapid discovery"
-          description="Tell us about your cohort. Within one business day we return a tailored scenario brief, a per-head estimate, and a branded dossier draft."
+          description="Start your journey with a free rapid discovery — tell us about your goals and we'll respond within one business day with a tailored approach and engagement model."
         />
 
         <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-5">
@@ -100,31 +101,29 @@ export function QuoteSection() {
                 <Input
                   label="Team size"
                   type="number"
-                  min={10}
+                  min={1}
                   placeholder="24"
                   value={form.teamSize}
                   onChange={(v) => set("teamSize", v)}
                   required
                 />
                 <div className="sm:col-span-2">
-                  <Label>Preferred scenario</Label>
+                  <Label>Service of interest</Label>
                   <select
-                    value={form.scenario}
-                    onChange={(e) => set("scenario", e.target.value)}
+                    value={form.service}
+                    onChange={(e) => set("service", e.target.value)}
                     className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary"
                   >
-                    <option>Help me choose</option>
-                    <option>The Quantum Vault (collaboration)</option>
-                    <option>The Executive Decision (leadership)</option>
-                    <option>The Innovation Lab (creativity)</option>
-                    <option>Branded / custom scenario</option>
+                    {SERVICE_OPTIONS.map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="sm:col-span-2">
                   <Label>Anything we should know?</Label>
                   <textarea
                     rows={3}
-                    placeholder="Dates, locations, team-skill goals…"
+                    placeholder="Goals, timelines, current stack…"
                     value={form.message}
                     onChange={(e) => set("message", e.target.value)}
                     className="w-full resize-none rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary"
@@ -146,7 +145,7 @@ export function QuoteSection() {
                     </>
                   ) : (
                     <>
-                      Request a Quote
+                      Start Your Journey
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </>
                   )}
@@ -173,7 +172,7 @@ export function QuoteSection() {
                         </span>
                         <div>
                           <p className="text-base font-semibold text-foreground">
-                            Quote request received
+                            Consultation request received
                           </p>
                           <p className="text-xs text-muted-foreground">
                             A case officer will reach you within one business day.
@@ -189,20 +188,17 @@ export function QuoteSection() {
                         />
                         <SummaryRow
                           label="Team size"
-                          value={`${form.teamSize} participants`}
+                          value={`${form.teamSize} people`}
                         />
-                        <SummaryRow
-                          label="Scenario"
-                          value={form.scenario}
-                        />
+                        <SummaryRow label="Service" value={form.service} />
                       </div>
 
                       <div className="mt-5 rounded-xl bg-secondary/60 p-3 text-xs text-muted-foreground">
                         <span className="font-semibold text-foreground">
                           Next step:
                         </span>{" "}
-                        We&apos;ll send a branded dossier draft and a
-                        per-head estimate to{" "}
+                        We&apos;ll send a rapid-discovery summary and an
+                        engagement model to{" "}
                         <span className="font-medium text-foreground">
                           {form.email || "your inbox"}
                         </span>
@@ -223,7 +219,7 @@ export function QuoteSection() {
                           className="rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
                         >
                           <CalendarCheck className="mr-2 h-4 w-4" />
-                          Book discovery call
+                          Book appointment
                         </Button>
                       </div>
                     </div>
@@ -254,6 +250,12 @@ export function QuoteSection() {
                     href={`mailto:${CONTACT.email}`}
                   />
                   <ContactRow
+                    icon={<Globe className="h-4 w-4" />}
+                    label="Website"
+                    value={CONTACT.website}
+                    href={CONTACT.websiteHref}
+                  />
+                  <ContactRow
                     icon={<MapPin className="h-4 w-4" />}
                     label="London HQ"
                     value={CONTACT.addressLines.join(", ")}
@@ -271,15 +273,10 @@ export function QuoteSection() {
                   Why teams choose LSAI Quantum
                 </p>
                 <ul className="relative mt-4 space-y-2 text-sm text-primary-foreground/85">
-                  {[
-                    "Time-zone aligned facilitators",
-                    "Accelerate development without compromising quality",
-                    "Scale rooms up or down, 10 to 100+",
-                    "Measurable team-skill scorecards",
-                  ].map((t) => (
-                    <li key={t} className="flex items-start gap-2">
+                  {WHY_CHOOSE_US.map((r) => (
+                    <li key={r.title} className="flex items-start gap-2">
                       <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gold" />
-                      {t}
+                      {r.body}
                     </li>
                   ))}
                 </ul>

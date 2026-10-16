@@ -14,36 +14,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LSAI Quantum — Corporate Mystery & Escape-Room Team Experiences",
+  title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
   description:
-    "LSAI Quantum designs immersive murder-mystery and escape-room team-building experiences for enterprise teams of 10–100+. Engineered collaboration, leadership and creativity outcomes with measurable ROI.",
+    "LSAI Quantum is an engineering partner for AI, data, cyber security, cloud & digital transformation. From intelligent automation to predictive analytics, we create AI-driven solutions that redefine industries.",
   keywords: [
     "LSAI Quantum",
-    "corporate team building",
-    "murder mystery",
-    "escape room",
-    "team experiences",
-    "leadership",
-    "collaboration",
-    "creativity",
+    "AI Transformation",
+    "Digital Transformation",
+    "Quantum Computing",
+    "Gen AI",
+    "Machine Learning",
+    "Internet of Things",
+    "Block Chain",
+    "Cyber Security",
+    "Cloud Engineering",
+    "Data Analytics",
+    "Managed Services",
   ],
   authors: [{ name: "LSAI Quantum Inc." }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "LSAI Quantum — Corporate Mystery & Escape-Room Team Experiences",
+    title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
     description:
-      "Engineered murder-mystery & escape-room experiences for enterprise teams. Branded dossiers, measurable team-skill outcomes, groups of 10–100+.",
+      "Engineering partner for AI, data, cyber security, cloud & digital transformation. From intelligent automation to predictive analytics.",
     url: "https://lsaiquantum.com",
     siteName: "LSAI Quantum",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "LSAI Quantum — Corporate Mystery & Escape-Room Team Experiences",
+    title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
     description:
-      "Engineered murder-mystery & escape-room experiences for enterprise teams.",
+      "Engineering partner for AI, data, cyber security, cloud & digital transformation.",
   },
 };
 

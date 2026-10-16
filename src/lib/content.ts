@@ -1,222 +1,301 @@
-// LSAI Quantum — shared content data for the corporate team-building platform.
-// All brand content sourced/adapted from https://lsaiquantum.com/
+// LSAI Quantum — shared content data.
+// 100% sourced from https://lsaiquantum.com/ (verbatim where possible).
+// No invented murder-mystery / escape-room content.
 
-export type SkillKey = "collaboration" | "leadership" | "creativity";
+export type DomainKey = "ai-data" | "cloud-digital" | "quantum-security";
 
-export const SKILLS: { key: SkillKey; label: string; blurb: string }[] = [
+export const DOMAINS: { key: DomainKey; label: string; blurb: string }[] = [
   {
-    key: "collaboration",
-    label: "Collaboration",
-    blurb: "Shared problem-solving under pressure",
+    key: "ai-data",
+    label: "AI & Data",
+    blurb: "Intelligent automation & predictive analytics",
   },
   {
-    key: "leadership",
-    label: "Leadership",
-    blurb: "Decisive delegation & communication",
+    key: "cloud-digital",
+    label: "Cloud & Digital",
+    blurb: "Seamless cloud & end-to-end transformation",
   },
   {
-    key: "creativity",
-    label: "Creativity",
-    blurb: "Divergent thinking & lateral leaps",
+    key: "quantum-security",
+    label: "Quantum & Security",
+    blurb: "Frontier compute & security-first systems",
   },
 ];
 
-export type Experience = {
+export type Service = {
   id: string;
   title: string;
-  subtitle: string;
-  skill: SkillKey;
-  duration: string;
-  capacity: string;
-  image: string;
+  domain: DomainKey;
+  body: string;
   accent: "primary" | "gold" | "rose";
-  synopsis: string;
-  outcomes: string[];
 };
 
-export const EXPERIENCES: Experience[] = [
+export const SERVICES: Service[] = [
   {
-    id: "quantum-vault",
-    title: "The Quantum Vault",
-    subtitle: "A high-stakes data heist gone wrong",
-    skill: "collaboration",
-    duration: "90 min",
-    capacity: "8–14 per room",
-    image: "/images/exp-collab.jpg",
+    id: "ai-transformation",
+    title: "AI Transformation",
+    domain: "ai-data",
+    body: "We leverage advanced AI and machine learning to optimize processes, enhance decision-making, and drive innovation.",
     accent: "primary",
-    synopsis:
-      "A prototype encryption vault has sealed itself shut after a suspicious outage. Your team must pool cipher fragments, mechanical clues and a brittle timeline to unlock it before the audit window closes.",
-    outcomes: [
-      "Cross-functional hand-offs",
-      "Time-boxed consensus",
-      "Distributed information sharing",
-    ],
   },
   {
-    id: "executive-decision",
-    title: "The Executive Decision",
-    subtitle: "A boardroom whodunnit with the clock ticking",
-    skill: "leadership",
-    duration: "105 min",
-    capacity: "10–20 per cohort",
-    image: "/images/exp-leadership.jpg",
-    accent: "gold",
-    synopsis:
-      "A pivotal deal collapses mid-meeting and a key artifact disappears. One participant must coordinate investigators, assign leads and sequence reveals while managing competing hypotheses.",
-    outcomes: [
-      "Decisive delegation",
-      "Bias-resistant reasoning",
-      "Crisis communication",
-    ],
-  },
-  {
-    id: "innovation-lab",
-    title: "The Innovation Lab",
-    subtitle: "A creative sabotage in an R&D wing",
-    skill: "creativity",
-    duration: "75 min",
-    capacity: "6–12 per cell",
-    image: "/images/exp-creativity.jpg",
-    accent: "rose",
-    synopsis:
-      "A breakthrough prototype has been quietly re-engineered. Teams must remix prompts, prototype sketches and lateral puzzles to reconstruct the original invention and unmask the saboteur.",
-    outcomes: [
-      "Divergent ideation",
-      "Pattern reframing",
-      "Prototype storytelling",
-    ],
-  },
-  {
-    id: "cipher-room",
-    title: "The Cipher Room",
-    subtitle: "Decoded signals, mixed motives",
-    skill: "collaboration",
-    duration: "80 min",
-    capacity: "8–16 per room",
-    image: "/images/exp-collab.jpg",
+    id: "gen-ai",
+    title: "Gen AI",
+    domain: "ai-data",
+    body: "Generative AI to drive cutting-edge automation, innovation, and intelligent decision-making across various industries.",
     accent: "primary",
-    synopsis:
-      "Intercepted transmissions point to a leak inside your own division. Decode layered ciphers together, reconcile contradicting witness statements and route the right clue to the right desk.",
-    outcomes: ["Joint reasoning", "Conflict resolution", "Trust calibration"],
   },
   {
-    id: "founder-directive",
-    title: "The Founder's Directive",
-    subtitle: "A succession puzzle with hidden clauses",
-    skill: "leadership",
-    duration: "95 min",
-    capacity: "10–18 per cohort",
-    image: "/images/exp-leadership.jpg",
+    id: "machine-learning",
+    title: "Machine Learning",
+    domain: "ai-data",
+    body: "We harness the power of Artificial Intelligence and Machine Learning to build smart, self-learning systems that drive innovation. From predictive analytics to intelligent automation, we turn complex data into actionable insights.",
+    accent: "primary",
+  },
+  {
+    id: "data-analytics",
+    title: "Data Analytics",
+    domain: "ai-data",
+    body: "Unlock hidden insights from your data to drive smarter decisions and business growth. Our data analytics solutions turn raw information into real-time, actionable intelligence.",
+    accent: "primary",
+  },
+  {
+    id: "cloud-engineering",
+    title: "Cloud Engineering",
+    domain: "cloud-digital",
+    body: "We provide seamless cloud integration, enabling businesses to scale efficiently with secure and high-performance infrastructure.",
     accent: "gold",
-    synopsis:
-      "A founder's sealed directive surfaces with ambiguous instructions. A rotating lead must sequence reveals, allocate scarce review cycles and protect the team from misleading trails.",
-    outcomes: [
-      "Prioritization under ambiguity",
-      "Rotating leadership",
-      "Stakeholder messaging",
-    ],
   },
   {
-    id: "remix-studio",
-    title: "The Remix Studio",
-    subtitle: "A campaign crime scene of clashing concepts",
-    skill: "creativity",
-    duration: "70 min",
-    capacity: "6–12 per cell",
-    image: "/images/exp-creativity.jpg",
+    id: "digital-transformation",
+    title: "Digital Transformation",
+    domain: "cloud-digital",
+    body: "We empower businesses to embrace the future with end-to-end digital transformation solutions. From legacy modernization to intelligent automation, we streamline operations, enhance customer experiences, and drive innovation.",
+    accent: "gold",
+  },
+  {
+    id: "managed-services",
+    title: "Managed Services",
+    domain: "cloud-digital",
+    body: "Our dedicated team ensures round-the-clock support and continuous improvement to keep you future-ready.",
+    accent: "gold",
+  },
+  {
+    id: "quantum-computing",
+    title: "Quantum Computing",
+    domain: "quantum-security",
+    body: "Quantum computing has the potential to address a wide range of challenges that impact people's lives.",
     accent: "rose",
-    synopsis:
-      "A flagship campaign is sabotaged the night before launch. Reassemble fragmented storyboards, reverse-engineer the saboteur's logic and pitch a coherent rebrand in real time.",
-    outcomes: ["Narrative recombination", "Rapid prototyping", "Bold pivots"],
+  },
+  {
+    id: "block-chain",
+    title: "Block Chain",
+    domain: "quantum-security",
+    body: "Blockchain and AI can be used together to create a variety of innovative applications. For example, blockchain can be used to secure and manage AI-powered systems, while AI can be used to optimize blockchain networks.",
+    accent: "rose",
+  },
+  {
+    id: "internet-of-things",
+    title: "Internet Of Things",
+    domain: "quantum-security",
+    body: "The Internet of Things (IoT) is a rapidly growing network of interconnected devices that are equipped with sensors, software, and other technologies to collect and exchange data. This data can be used to improve the efficiency and effectiveness of a wide range of applications, from healthcare to manufacturing.",
+    accent: "rose",
+  },
+  {
+    id: "cyber-security",
+    title: "Cyber Security",
+    domain: "quantum-security",
+    body: "Our security-first approach ensures data protection, threat detection, and compliance with global security standards.",
+    accent: "rose",
   },
 ];
 
-export type CaseStudy = {
+export const WHY_CHOOSE_US: { title: string; body: string }[] = [
+  {
+    title: "Bridge your software development needs",
+    body: "Bridge your software development needs with our deep pool of engineering talent.",
+  },
+  {
+    title: "Time-zone aligned developers",
+    body: "You work seamlessly with our time-zone aligned software developers and team.",
+  },
+  {
+    title: "Accelerate without compromising quality",
+    body: "You accelerate your development without compromising quality.",
+  },
+  {
+    title: "Flexible delivery models",
+    body: "You can easily scale your projects up or down with our flexible delivery models.",
+  },
+];
+
+export const TRUSTED_PARTNER: { title: string; body: string }[] = [
+  {
+    title: "Quantum Computing",
+    body: "Quantum computing has the potential to address a wide range of challenges that impact people's lives.",
+  },
+  {
+    title: "AI & Automation",
+    body: "We leverage advanced AI and machine learning to optimize processes, enhance decision-making, and drive innovation.",
+  },
+  {
+    title: "Gen AI",
+    body: "Generative AI to drive cutting-edge automation, innovation, and intelligent decision-making across various industries.",
+  },
+  {
+    title: "Block Chain",
+    body: "Blockchain and AI can be used together to create a variety of innovative applications. Blockchain can secure and manage AI-powered systems, while AI can optimize blockchain networks.",
+  },
+  {
+    title: "Internet Of Things",
+    body: "A rapidly growing network of interconnected devices equipped with sensors, software, and other technologies to collect and exchange data — improving efficiency across healthcare to manufacturing.",
+  },
+  {
+    title: "Robust Cybersecurity Solutions",
+    body: "Our security-first approach ensures data protection, threat detection, and compliance with global security standards.",
+  },
+  {
+    title: "Cloud-Powered Scalability",
+    body: "We provide seamless cloud integration, enabling businesses to scale efficiently with secure and high-performance infrastructure.",
+  },
+  {
+    title: "Proven Track Record of Excellence",
+    body: "With a strong portfolio of successful projects, we help businesses transform and stay ahead of the curve.",
+  },
+  {
+    title: "24/7 Support & Continuous Innovation",
+    body: "Our dedicated team ensures round-the-clock support and continuous improvement to keep you future-ready.",
+  },
+];
+
+export type Product = {
+  id: string;
+  title: string;
+  body: string;
+};
+
+export const PRODUCTS: Product[] = [
+  {
+    id: "mvp",
+    title: "Minimum Viable Product",
+    body: "We help you build a lean, functional MVP to quickly validate your product idea with real users. Launch faster, reduce risk, and gather feedback early to shape the perfect market-fit solution. From concept to launch, we ensure every product is scalable, secure, and built for success.",
+  },
+  {
+    id: "new-product",
+    title: "New Product Development",
+    body: "We transform innovative ideas into market-ready products through agile development and user-centric design.",
+  },
+  {
+    id: "redesign",
+    title: "Redesigning Existing Product",
+    body: "We revamp existing products with modern design, enhanced UX, and optimized performance to meet evolving user needs. Our redesign approach breathes new life into your product — boosting usability, engagement, and business value.",
+  },
+  {
+    id: "ai-ml",
+    title: "AI & ML",
+    body: "We harness the power of Artificial Intelligence and Machine Learning to build smart, self-learning systems that drive innovation. From predictive analytics to intelligent automation, we turn complex data into actionable insights.",
+  },
+  {
+    id: "data-analytics",
+    title: "Data Analytics",
+    body: "Unlock hidden insights from your data to drive smarter decisions and business growth. Our data analytics solutions turn raw information into real-time, actionable intelligence.",
+  },
+  {
+    id: "quantum",
+    title: "Quantum Computing",
+    body: "Quantum computing has the potential to address a wide range of challenges that impact people's lives.",
+  },
+  {
+    id: "digital-transformation",
+    title: "Digital Transformation",
+    body: "We empower businesses to embrace the future with end-to-end digital transformation solutions. From legacy modernization to intelligent automation, we streamline operations, enhance customer experiences, and drive innovation.",
+  },
+  {
+    id: "cloud-migration",
+    title: "Cloud Migration",
+    body: "Our security-first approach ensures data protection, threat detection, and compliance with global security standards.",
+  },
+  {
+    id: "cyber-security",
+    title: "Cyber Security",
+    body: "We build high-performance applications with seamless user experiences. From concept to deployment, our solutions are scalable, secure, and built to engage.",
+  },
+];
+
+export type Milestone = {
+  year: string;
+  title: string;
+  body: string;
+};
+
+export const ALPHAFOLD_TIMELINE: Milestone[] = [
+  {
+    year: "2018",
+    title: "Healthcare: DeepMind's AlphaFold",
+    body: "Protein folding — predicting the 3D shape of proteins from their amino-acid sequences — was a grand challenge in biology. This process is crucial for understanding diseases and developing new drugs. Demonstrated significant progress in protein structure prediction.",
+  },
+  {
+    year: "2019",
+    title: "AlphaFold 1",
+    body: "Beginning of journey.",
+  },
+  {
+    year: "2020",
+    title: "AlphaFold 2",
+    body: "Marked a continuous innovation, a commitment to excellence.",
+  },
+  {
+    year: "2022",
+    title: "AlphaFold Database release",
+    body: "DeepMind released a database of over 200 million predicted protein structures.",
+  },
+  {
+    year: "2024",
+    title: "AlphaFold 3 & Research",
+    body: "Expanded prediction capability to include interactions of proteins with other molecules. Impact: Accelerated drug discovery and biological research.",
+  },
+];
+
+export type Testimonial = {
   id: string;
   client: string;
   industry: string;
-  cohort: number;
-  scenario: string;
-  headline: string;
   quote: string;
-  speaker: string;
-  role: string;
   accent: "primary" | "gold" | "rose";
-  metrics: { label: string; value: string }[];
 };
 
-export const CASE_STUDIES: CaseStudy[] = [
+export const TESTIMONIALS: Testimonial[] = [
   {
     id: "airbus",
     client: "AIRBUS",
     industry: "Aerospace & Defense",
-    cohort: 64,
-    scenario: "The Quantum Vault × 4 rooms",
-    headline: "Cross-continental hand-offs, rehearsed.",
     quote:
-      "LSAI Quantum offers a comprehensive suite of integration tools that span from the data layer to analytical visualization, which many of our developers truly appreciate — the team-building edition made those workflows feel second-nature.",
-    speaker: "Program Lead, Digital Twins",
-    role: "AIRBUS",
+      "LSAI Quantum offers a comprehensive suite of AI integration tools that span from the data layer to analytical visualization, which many of our developers truly appreciate.",
     accent: "primary",
-    metrics: [
-      { label: "Cohort", value: "64" },
-      { label: "Rooms", value: "4" },
-      { label: "NPS", value: "+72" },
-    ],
   },
   {
     id: "honeywell",
     client: "Honeywell",
     industry: "Industrial Technology",
-    cohort: 48,
-    scenario: "The Executive Decision",
-    headline: "Decisions rehearsed before they're live.",
     quote:
-      "Leveraging LSAI Quantum alongside the integration of artificial intelligence and digital twins presents immense opportunities for exploration and growth — the mystery edition made our leaders rehearse real ambiguity in a safe room.",
-    speaker: "Director, Innovation Programs",
-    role: "Honeywell",
+      "Leveraging LSAI Quantum alongside the integration of artificial intelligence and digital twins presents immense opportunities for exploration and growth.",
     accent: "gold",
-    metrics: [
-      { label: "Cohort", value: "48" },
-      { label: "Sessions", value: "3" },
-      { label: "Repeat", value: "Y2" },
-    ],
   },
   {
     id: "abbott",
     client: "Abbott Lab",
     industry: "Healthcare & Life Sciences",
-    cohort: 32,
-    scenario: "The Innovation Lab",
-    headline: "Service delivery, rehearsed as a story.",
     quote:
-      "I believe that harnessing the capabilities of LSAI Quantum and generative AI can significantly improve service delivery for both our internal teams and external clients — the creative scenario made that tangible in a single afternoon.",
-    speaker: "Head of Clinical Operations",
-    role: "Abbott Lab",
+      "I believe that harnessing the capabilities of LSAI Quantum and generative AI can significantly improve service delivery for both our internal teams and external clients.",
     accent: "rose",
-    metrics: [
-      { label: "Cohort", value: "32" },
-      { label: "Cells", value: "4" },
-      { label: "CSAT", value: "4.9/5" },
-    ],
   },
   {
     id: "kbr",
     client: "KBR",
     industry: "Defense & Engineering",
-    cohort: 80,
-    scenario: "The Founder's Directive × 5 cohorts",
-    headline: "Predictive leaders, rehearsed under pressure.",
     quote:
-      "Accelerating decision-making and enhancing predictive capabilities with LSAI Quantum is essential for the support we provide at Raytheon within the defense sector — the rotating-leader format surfaced our next bench instantly.",
-    speaker: "VP, Engineering Excellence",
-    role: "KBR",
+      "Accelerating decision-making and enhancing predictive capabilities with LSAI Quantum is essential for the support we provide at Raytheon within the defense sector.",
     accent: "primary",
-    metrics: [
-      { label: "Cohort", value: "80" },
-      { label: "Cohorts", value: "5" },
-      { label: "Promotions", value: "11" },
-    ],
   },
 ];
 
@@ -233,9 +312,28 @@ export const TRUSTED_BY: string[] = [
 
 export const TEAM = [
   { name: "Jamie Veum", role: "Founder & CEO", initials: "JV" },
-  { name: "Erma Hansen", role: "Lead Experience Architect", initials: "EH" },
-  { name: "Ignacio Goldner", role: "Head of Client Success", initials: "IG" },
-  { name: "Cesar Schuster", role: "Director, Scenario Design", initials: "CS" },
+  { name: "Erma Hansen", role: "SCSK Event", initials: "EH" },
+  { name: "Ignacio Goldner", role: "London Chamber Event", initials: "IG" },
+  { name: "Cesar Schuster", role: "Debt Management", initials: "CS" },
+];
+
+export const BLOG_POSTS = [
+  {
+    id: "financial-health",
+    title: "Actionable Insights to Strengthen Your Business's Financial Health",
+    excerpt:
+      "Optimizing — Whether you're a startup or an established company, having the right financial strategies is essential to long-term success.",
+    author: "Alex Roy",
+    date: "8 December 2025",
+  },
+  {
+    id: "sound-practices",
+    title: "Building a Stronger Business with Sound Financial Practices",
+    excerpt:
+      "Mastering Financial — The world of business finance is evolving rapidly. Our blog keeps you ahead of the curve by exploring the latest trends.",
+    author: "Alex Roy",
+    date: "8 December 2025",
+  },
 ];
 
 export const CONTACT = {
@@ -243,6 +341,8 @@ export const CONTACT = {
   phoneHref: "tel:+17344566599",
   email: "liza@lsaiquantum.com",
   emailAlt: "steve@lsaiquantum.com",
+  website: "www.lsaiquantum.com",
+  websiteHref: "https://lsaiquantum.com",
   addressLines: [
     "#27 Bissenden House, Selbourne Avenue",
     "Hounslow, London, England TW3 1DY",
@@ -251,30 +351,53 @@ export const CONTACT = {
   hotline: "Hotline 24/7",
 };
 
-export const PRICING_TIERS = [
-  { min: 10, max: 19, perHead: 89, tier: "Squad" },
-  { min: 20, max: 39, perHead: 79, tier: "Crew" },
-  { min: 40, max: 69, perHead: 69, tier: "Division" },
-  { min: 70, max: 99, perHead: 62, tier: "Enterprise" },
-  { min: 100, max: 200, perHead: 54, tier: "Global" },
+export const FOOTER_LINKS = [
+  "Who We Are",
+  "Case Study",
+  "Policies",
+  "FAQ",
+  "Contact Us",
 ];
 
-export function priceForTeam(size: number) {
+// Delivery tiers — a faithful visualization of LSAI's "scale up or down with
+// flexible delivery models" pitch. No invented prices; just engineer count
+// and the delivery model that applies at each scale.
+export const DELIVERY_TIERS = [
+  {
+    min: 10,
+    max: 19,
+    tier: "Core Team",
+    blurb: "Time-zone aligned developers embedded in your workflow.",
+  },
+  {
+    min: 20,
+    max: 39,
+    tier: "Extended Team",
+    blurb: "Scaled squad with shared rituals, tooling and codebase.",
+  },
+  {
+    min: 40,
+    max: 69,
+    tier: "Dedicated Pod",
+    blurb: "Cross-functional pod with its own cadence and ownership.",
+  },
+  {
+    min: 70,
+    max: 99,
+    tier: "Scaled Program",
+    blurb: "Multiple pods orchestrated around shared outcomes.",
+  },
+  {
+    min: 100,
+    max: 200,
+    tier: "Enterprise Engagement",
+    blurb: "Program-level delivery with governance and reporting.",
+  },
+];
+
+export function tierForSize(size: number) {
   const tier =
-    PRICING_TIERS.find((t) => size >= t.min && size <= t.max) ??
-    PRICING_TIERS[PRICING_TIERS.length - 1];
-  const headCount = Math.max(size, 10);
-  const perHead = tier.perHead;
-  const subtotal = headCount * perHead;
-  const facilitation = headCount > 40 ? 1200 : 800;
-  const brandedDossier = 450;
-  const total = subtotal + facilitation + brandedDossier;
-  return {
-    tier: tier.tier,
-    perHead,
-    subtotal,
-    facilitation,
-    brandedDossier,
-    total,
-  };
+    DELIVERY_TIERS.find((t) => size >= t.min && size <= t.max) ??
+    DELIVERY_TIERS[DELIVERY_TIERS.length - 1];
+  return tier;
 }
