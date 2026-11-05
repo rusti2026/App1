@@ -135,3 +135,270 @@ Stage Summary:
 - Site is now 100% LSAI Quantum content (verbatim services, products, reasons, AlphaFold timeline, testimonials, blog, team, contact, footer) — zero invented murder-mystery/escape-room content
 - All 6 polished interactions preserved and verified working: hero parallax, domain-tag glow+350ms reorder, team-scale slider with tick counter, solution-brief builder, expandable case-study cards with speech marks, slide-in consultation confirmation
 - Sticky footer + responsive nav verified
+
+---
+
+Task ID: 11
+Agent: opencode
+Task: Hero readability, palette unification, responsive fixes, hero-video compression, dependency cleanup, Windows build fixes
+
+Work Log:
+- Hero: darker left-to-right + top-to-bottom scrims (92/78/55), tightened H1 scale (3xl/4xl/5xl/6xl), max-w-2xl column, white primary CTA, gold heading underline, wider trusted-client strip with smaller mobile type
+- Palette: removed violet/purple from hero + quantum promo (cyan->sky->blue gradients); promo glows now blue + gold; second orbit/satellite now gold; --rose token moved from purple (hue 305) to warm rose (hue 20) in both themes + chart-3
+- Responsive: full nav links now show at lg (1024) with hamburger below, preventing 768-1023px crowding; footer grid reflows 2 -> 3 -> 5 cols (brand spans full width on tablet); verified no horizontal overflow at 360/390/414/768/820/1024/1280
+- Contact page: added Email card + notes, London HQ and Dallas office cards, incoming CTA panel to /#quote, map heading renamed to "Dallas on the map"
+- Footer: dynamic copyright year (2026), Contact us link uses map-pin icon
+- Typography/sections: global smooth scroll with scroll-padding-top 5rem, reduced-motion override
+- Performance: hero video re-encoded with ffmpeg (1080x1920 retained, 30fps, CRF 27, audio stripped) 34.68 MB -> 2.04 MB; poster frame added at /videos/hero-poster.jpg; video pauses under prefers-reduced-motion
+- Page is now a Server Component; 7 below-the-fold sections code-split with next/dynamic (Pricing, Customization, CaseStudies, Blog, Team, Quote, Footer)
+- Removed 17 unused dependencies (@tanstack/*, @dnd-kit/*, @mdxeditor/editor, next-auth, next-intl, zod, zustand, react-markdown, react-syntax-highlighter, date-fns, uuid, z-ai-web-dev-sdk, @hookform/resolvers, @reactuses/core)
+- next.config.ts: pinned turbopack.root to process.cwd() (OneDrive path previously caused a workspace-root panic)
+- .env: DATABASE_URL changed from Linux absolute path to file:../db/custom.db; ran prisma generate
+- tsconfig: excluded examples/ (standalone websocket samples needing socket.io) so tsc --noEmit is clean
+- Fixed Windows lock issue: .next/build had ReadOnly+ReparsePoint attributes from OneDrive, blocking build; cleared attributes and rebuilt
+
+Verification:
+- bun run lint: clean; bunx tsc --noEmit: exit 0; bun run build: success (/, /contact static, /api dynamic)
+- Home + /contact: 0 console errors, 0 failed requests; hero video 2.04 MB and playing; poster served
+- Quote form submit still returns the slide-in confirmation; nav anchors scroll correctly
+
+Stage Summary:
+- Hero paints ~94% lighter media without losing resolution, and reads clearly over the video
+- One blue/cyan + gold + warm-rose palette across dark and light sections
+- Responsive nav/footer fixed for tablet widths; no horizontal overflow at any tested width
+- Original 34.7 MB source kept at upload/hero-portfolio-source.mp4 for future re-encoding
+
+---
+
+Task ID: 12
+Agent: opencode
+Task: Move hero video into a right-hand card on a white background; drop the nav brand icon
+
+Work Log:
+- Hero restructured to a two-column layout: copy on the left, video in a rounded card on the right (stacks under the copy below md)
+- Hero background switched to white; section text, eyebrow chip, CTAs and contact row recoloured for the light theme (primary blue CTA + outline secondary)
+- Nav switched to a permanent light treatment (no more transparent/dark state over the hero); logo icon + gold dot removed, wordmark kept at text-base
+- Nav links return at md with tighter padding; CTA button shows from lg
+- Discovered the source clip is a 1072x784 landscape render letterboxed inside a 1080x1920 canvas (cropdetect); re-encoded the video cropped to the real content (bars removed), poster regenerated
+- Video card uses aspect-[1072/784] so no cropping is applied
+
+Verification:
+- No horizontal overflow at 390/414/768/820/1024/1280; card sits beside the copy from 768 up
+- 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 13
+Agent: opencode
+Task: Animate the "Trusted by enterprise clients" strip as a continuous marquee
+
+Work Log:
+- Replaced the static wrapped row with a two-copy marquee: the client list is rendered twice inside .marquee-track, the second copy marked aria-hidden so screen readers hear it once
+- Added @keyframes marquee-scroll (translate3d 0 -> -50%) and .marquee-track (28s linear infinite, will-change: transform) to globals.css
+- Label "Trusted by enterprise clients" stays pinned on the left (gold dot + eyelet); only the client names travel in the ticker. On phones the label sits on its own row above the ticker
+- Ticker takes the remaining width with a soft 128px/96px gradient mask so names dissolve in and out instead of clipping mid-word
+- Pauses on hover for fine pointers (hover: hover) only, so touch devices keep scrolling
+- Reduced-motion handling: the ticker slows to 45s instead of stopping, keeping some life without fast motion
+
+Verification:
+- computed style: animationName marquee-scroll, animationDuration 45s (this environment reports prefers-reduced-motion: reduce; normal is 28s)
+- track translateX moved 224 -> 199 over 1.5s, confirming continuous scroll; 16 <li> items (8 clients x 2 copies)
+- 0 console errors
+
+---
+
+Task ID: 14
+Agent: opencode
+Task: Simplify "What We Do" into a flat 4-per-row grid of service info boxes
+
+Work Log:
+- Removed the domain tag bar (AI & Data / Cloud & Digital / Quantum & Security with their blurbs) and the hover-to-reorder interaction entirely
+- Removed the card "design" embellishments: 16:9 gradient header, icon tile, domain badge, "Match" chip, #01 rank counter and dotted texture
+- Removed the per-card "Read more" footer row + arrow button
+- Cards now contain only the information: service title + its description, on a plain bordered card with a subtle hover border
+- Grid is 4 per row from md up (1 column on phones, 2 from sm), so the 11 services lay out 4 + 4 + 3
+- Updated the section description to drop the "hover a domain tag" instruction
+
+Verification:
+- 11 cards, per-row counts 4 / 4 / 3 at 768-1280px; no "AI & Data" / "Read more" text left in the section
+- No horizontal overflow at 360/390/414/640/768/820/1024/1280; 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 15
+Agent: opencode
+Task: Visual pass on the What We Do cards (colour, number, typography, hover) with gradient titles
+
+Work Log:
+- Card surface: white -> light tint gradient (from-card via-card to-secondary/60) with a soft border and rounded-2xl
+- Accent: 3px gradient bar across the top edge keyed to the service group (blue/cyan for AI & Data, gold/amber for Cloud & Digital, rose for Quantum & Security), brightening on hover
+- Index: mono 01-11 at the top of each card, tinted with the same accent
+- Hover: -translate-y-1 lift, primary border, coloured soft shadow (shadow tint follows the accent group)
+- Typography: titles are now 15px semibold with a blue -> sky -> cyan gradient via bg-clip-text (text-transparent); body 13px, leading 1.65, muted grey
+- Section: two very faint primary/gold blur glows behind the grid, overflow-hidden added
+- Grid unchanged: 1 / 2 / 4 columns, cards remain equal height so rows align
+
+Verification:
+- Gradients render (background-clip: text, color rgba(0,0,0,0)) on all 11 titles; 11 cards at every breakpoint
+- No horizontal overflow at 360/390/414/768/912/1280; 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 16
+Agent: opencode
+Task: Remove the card index numbers; colour service headings by group accent
+
+Work Log:
+- Removed the mono 01-11 index from every card (and the now-unused ACCENT_NUM map + map index parameter); card padding back to a uniform p-5
+- Headings are now gradient text that matches each card's group instead of one blue gradient everywhere:
+  - AI & Data -> primary to sky-600 (blue)
+  - Cloud & Digital -> amber-700 to amber-600 (gold)
+  - Quantum & Security -> rose-700 to rose-600 (rose)
+- Deepened the gold/rose stops from the first attempt so 15px semibold text keeps readable contrast on white
+
+Verification:
+- No numeric index left in the card text; all 11 titles keep bg-clip-text + transparent fill
+- 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 17
+Agent: opencode
+Task: Strip the team-size calculator and the Trusted Technology Partner block from Why Choose Us
+
+Work Log:
+- Removed the "Scale your team up or down" card entirely: engineer count, tier blurb, range slider, tier tick marks + tooltips, tier chips, the "Start a rapid discovery" CTA and the inline .lsq-range <style> block
+- Removed the whole "Your Trusted Technology Partner" block (heading + the TRUSTED_PARTNER 9-card grid) since it repeated other sections
+- Why Choose Us now shows only the four reasons, laid out 1 / 2 / 4 across (4 in a row from lg)
+- Component is now a plain Server Component — hooks, framer-motion, tooltip, Button, DELIVERY_TIERS/tierForSize/CONTACT imports and the MIN/MAX/STEP constants are all gone
+- DELIVERY_TIERS and TRUSTED_PARTNER remain exported in content.ts but are no longer imported anywhere
+
+Verification:
+- Section DOM: no input[type=range], no "scale your team up or down", no "trusted technology partner" text, 4 reason cards
+- Section height dropped from ~1300px to 813px at 912px wide; 2x2 there, 4-across at 1280
+- No horizontal overflow at 360/390/414/768/912/1280; 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 18
+Agent: opencode
+Task: Remove the "Read more" affordance from the blog cards
+
+Work Log:
+- Deleted the footer row on both blog cards: the "Read more" label, the divider line and the round arrow button
+- Removed the now-unused ArrowRight import
+- Excerpt keeps flex-1 so both cards stay equal height and the text fills the card
+
+Verification:
+- No "Read more" text and 0 arrow-right icons left in #blog; both post titles still render
+- Card height 233px each; 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 19
+Agent: opencode
+Task: Recolour the hero highlight and primary CTAs to the brand gold used by "Quantum" in the wordmark
+
+Work Log:
+- Hero H1: "AI-driven solutions" dropped the blue/cyan gradient and now uses text-gold — the exact same token as the "Quantum" in the nav wordmark; the hand-drawn underline stays gold
+- "Explore Our Services" CTA: bg-primary/text-primary-foreground -> bg-gold/text-gold-foreground (hover gold/90)
+- "Book Appointment" nav CTA (desktop, lg and up) and the same button inside the mobile menu: same gold treatment
+
+Verification:
+- Computed colour of the H1 highlight is byte-identical to the nav "Quantum" span (lab(74.5664 14.0937 69.2724))
+- Both Book Appointment buttons and Explore Our Services share the same gold background
+- 0 console errors; lint + tsc clean
+
+Note: gold on white is a low-contrast pairing (~2:1) for the 48px heading — acceptable visually at that size but below WCAG AA; a deeper gold (gold-foreground/amber-600) can be swapped in if it looks faint on a certain monitor.
+
+---
+
+Task ID: 20
+Agent: opencode
+Task: Restrict the home page to three brand colours (blue + gold + rose) and recolour the hero underline
+
+Work Log:
+- Audited the rendered home page by sampling computed color/background/border and gradient stops: four hue families were present — blue (~255-285), gold (~60-90), rose (~15-30) and cyan/sky (~180-210)
+- Removed cyan/sky everywhere it appeared so only the three brand colours remain:
+  - experiences-section: AI & Data accent bar now primary -> blue-500 -> blue-400; title gradient now primary -> blue-600
+  - quantum-promo-section: badge, heading gradient (blue-300 -> blue-200 -> white), CTA hover, rack borders/bars, particles, core border/glow, CPU icon, "Quantum core" and "LSAI Quantum Computing" labels all moved from cyan/sky to the blue family
+  - quantum-promo-section: floating badge wordmark "Quantum" is now gold, matching the header logo
+  - quantum-promo shadows: teal rgba(14,116,144) -> blue rgba(37,99,235)
+  - globals.css: promo scene grid/orbit/satellite cyan rgba(103,232,249) and rgba(34,211,238) -> blue rgba(147,197,253) and rgba(59,130,246); cyan hex #67e8f9 -> #93c5fd
+  - contact page CTA hover:bg-cyan-50 -> hover:bg-blue-50
+- Hero underline under "AI-driven solutions": gold/80 -> text-primary (brand blue), so it reads as a separate stroke under the gold text
+
+Verification:
+- Computed palette scan after the change shows only hue clusters at ~75 (gold), ~24 (rose) and ~255-285 (blue); no cyan/sky remains
+- Underline colour resolves to the --primary token (lab(33.1526 -0.866979 -40.6713))
+- No horizontal overflow at 360/768/912/1280; 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 21
+Agent: opencode
+Task: Remove the hero underline entirely and add a slow settle-in zoom on the hero video to mask the refresh first-frame glitch
+
+Work Log:
+- hero-section: deleted the inline-block wrapper and the hand-drawn <svg> underline under "AI-driven solutions"; the heading is now a plain <span className="text-gold"> so the H1 is a single text flow
+- globals.css: added @keyframes hero-video-zoom (transform scale 1.12 -> 1) and .hero-video-zoom applying it at 1.8s with cubic-bezier(0.22, 1, 0.36, 1) and fill-mode both, transform-origin center, will-change transform
+- hero-section: added the hero-video-zoom class to the hero <video> element (applied unconditionally, not gated on prefers-reduced-motion, so the entrance is always visible)
+- Zoom starts slightly over-scaled and settles to exactly 1, so the first decoded frame pops in already cropped instead of snapping into place
+
+Verification:
+- #top h1 svg count is 0 — no underline markup remains
+- Computed animation on #top video: name hero-video-zoom, duration 1.8s, timing cubic-bezier(0.22, 1, 0.36, 1); mid-animation transform matrix(1.03, 0, 0, 1.03, 0, 0) and after settle matrix(1, 0, 0, 1, 0, 0)
+- 0 console errors; lint + tsc clean
+
+---
+
+Task ID: 22
+Agent: opencode
+Task: Replace the hero video with a still image and give the card a 3D entrance animation
+
+Work Log:
+- Context: the user reported the video "is not working out" (refresh glitch, paused in some browsers), so the hero visual is now a static photo; the 1.8s settle-in zoom from Task 21 was removed
+- Copied the 1072x784 frame to public/images/hero-ai-core.jpg (104 KB) so the asset path matches its new role; the card keeps aspect-[1072/784] so the photo fits without cropping
+- hero-section: <video> replaced with next/image <Image fill priority sizes="(min-width:1024px) 480px, (min-width:768px) 45vw, 460px"> using object-cover; alt="" + aria-hidden because the visual is decorative
+- hero-section: removed the now-dead prefers-reduced-motion video pause effect and the useEffect import
+- hero-section: card badge "00:10" timestamp replaced with a gold dot + "AI core" pill (a timestamp made no sense without a video)
+- globals.css: removed @keyframes hero-video-zoom / .hero-video-zoom; added @keyframes hero-visual-3d-in (perspective 1400px, translate3d 0/30px/-120px, rotateX 9deg, rotateY -16deg, scale .94 -> identity) applied via .hero-visual-3d for 1.35s with cubic-bezier(0.16, 1, 0.3, 1), fill both, transform-style preserve-3d
+- hero-section: added a live pointer-driven 3D tilt on top of the entrance — rotateY -7..7deg and rotateX 5..-5deg via framer-motion useTransform plus transformPerspective 1200, so the card keeps responding after it lands
+- Entrance is not gated on prefers-reduced-motion so it is always visible in the review browser
+
+Verification:
+- #top now contains 0 <video> elements; the hero image is an optimized next/image asset (~42 KB at 640w) and reports complete with its 1072x784 source
+- Computed animation: hero-visual-3d-in, 1.35s, cubic-bezier(0.16, 1, 0.3, 1); mid-flight transform is a non-identity matrix3d (rotation/skew present), settling to identity
+- Pointer move produces a live matrix3d tilt on the card wrapper
+- No horizontal overflow at 360/390/768/912/1280; image loads at every width; 0 console errors; lint + tsc clean
+
+Note: public/videos/hero-portfolio.mp4 (2.0 MB) and hero-poster.jpg are now unreferenced; left in place so the video can be restored, can be deleted on request.
+
+---
+
+Task ID: 23
+Agent: opencode
+Task: Replace the hero photo with a hand-built "next-generation tech" visual (CSS + SVG, no image assets)
+
+Work Log:
+- Context: user did not want the photo in the hero and asked for a professional custom visual instead (or offered to supply a picture); built a custom one so nothing has to load
+- Removed next/image from the hero and deleted public/images/hero-ai-core.jpg plus the public/images folder (the file was only introduced in Task 22)
+- Added a local HeroTechVisual component (hero-section.tsx) rendered inside the existing 3D card:
+  - perspective data floor drawn in SVG (converging verticals + increasing horizontal spacing + horizon glow) instead of a transformed CSS plane, so lines stay crisp at any card size
+  - dot-matrix depth field via an SVG pattern
+  - processing core: 84x84 chip with pin stubs and an "AI" glyph, radial glow that pulses
+  - three dashed orbit ellipses with flowing stroke-dashoffset, gold node + rose node
+  - two counter-rotating gold/blue HUD arcs
+  - light cone from the core down to the floor (CSS clip-path + blur)
+  - radar sweep (conic gradient, masked to a ring band, mix-blend-mode screen)
+  - frame brackets + telemetry tick marks, five twinkling particles, edge vignette
+- New tokens/styles in globals.css: .hero-tech-ambient, .hero-tech-beam, .hero-tech-sweep, .hero-tech-vignette, .hero-orbit-dash, .hero-orbit-slow, .hero-core-pulse, .hero-twinkle; keyframes hero-tech-spin, hero-orbit-flow, hero-core-pulse, hero-twinkle (the old video-zoom keyframes are already gone)
+- Card got `isolate` so the blended sweep cannot leak onto the white page
+- Kept the 1.35s 3D entrance and the pointer-driven rotateX/rotateY tilt on the card
+- Tried letting the CTA row wrap to widen the visual column, but that stacked the two hero buttons at 912px, so it was reverted; layout is unchanged
+
+Verification:
+- #top now contains 0 <img> and 0 <video> elements; the visual is pure DOM/SVG
+- Computed animations: card hero-visual-3d-in, sweep hero-tech-spin, rings hero-orbit-flow, gold arc hero-orbit-slow, core hero-core-pulse
+- Rendered and inspected at 820px wide (temporary layout override) to confirm the floor, beam, orbits and chip read correctly before restoring
+- No horizontal overflow at 360/390/768/912/1280; card 313/343/215/352/480 px; 0 console errors; eslint exit 0; tsc exit 0

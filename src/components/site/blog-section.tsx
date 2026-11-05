@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, CalendarDays, User } from "lucide-react";
+import { CalendarDays, User } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/content";
 import { SectionHeading } from "./section-heading";
 
@@ -45,15 +45,6 @@ export function BlogSection() {
               <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {post.excerpt}
               </p>
-
-              <div className="mt-6 flex items-center justify-between border-t border-border/70 pt-4">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
-                  Read more
-                </span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-foreground transition-transform duration-300 group-hover:translate-x-0.5">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </div>
             </motion.article>
           ))}
         </div>

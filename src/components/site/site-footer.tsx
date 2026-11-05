@@ -16,13 +16,17 @@ const LINK_TARGETS: Record<string, string> = {
   "Case Study": "#case-studies",
   Policies: "#quote",
   FAQ: "#why-choose-us",
-  "Contact Us": "#quote",
+  "Contact Us": "/contact",
 };
 
 export function SiteFooter() {
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const nav = (href: string) => {
+    if (!href.startsWith("#")) {
+      window.location.assign(href);
+      return;
+    }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -30,9 +34,9 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           {/* Brand */}
-          <div className="col-span-2 lg:col-span-2">
+          <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <div className="flex items-center gap-2.5">
               <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <Sparkles className="h-4.5 w-4.5" strokeWidth={2.2} />
@@ -75,13 +79,25 @@ export function SiteFooter() {
                 <Globe className="h-4 w-4 text-primary" />
                 {CONTACT.website}
               </a>
+              <a
+                href="/contact"
+                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <MapPin className="h-4 w-4 text-primary" />
+                Contact us
+              </a>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="mt-0.5 h-4 w-4 flex-none text-primary" />
                 <span>
+                  London HQ:{" "}
                   {CONTACT.addressLines[0]}
                   <br />
                   {CONTACT.addressLines[1]}
                 </span>
+              </div>
+              <div className="flex items-start gap-2 text-muted-foreground">
+                <MapPin className="mt-0.5 h-4 w-4 flex-none text-primary" />
+                <span>Dallas office: {CONTACT.dallasOffice}</span>
               </div>
             </div>
           </div>
@@ -143,12 +159,9 @@ export function SiteFooter() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
-            © Copyright 2025 - LSAI Quantum Inc., All Right Reserved.
+            © {new Date().getFullYear()} — LSAI Quantum Inc., All Rights Reserved.
           </p>
           <div className="flex items-center gap-3">
-            <span className="text-[11px] text-muted-foreground">
-              {CONTACT.region}
-            </span>
             <button
               type="button"
               onClick={toTop}

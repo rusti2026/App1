@@ -49,6 +49,19 @@ dev.out.log
 test
 prompt
 
+# local database (file: SQLite, not source)
+/db/*.db
+
+# runtime artefacts
+.zscripts/*.pid
+
+# npm lockfile — this project installs with bun
+package-lock.json
+
+# large local media / raw sources (kept on disk, not in git)
+upload/*.mp4
+public/videos/
+
 server.log
 # Skills directory
 /skills/

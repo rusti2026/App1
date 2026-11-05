@@ -1,0 +1,3 @@
+[submodule "App1"]
+	path = App1
+	url = https://github.com/rusti2026/App1.git

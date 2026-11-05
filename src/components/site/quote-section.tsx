@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { CONTACT, SERVICES, WHY_CHOOSE_US } from "@/lib/content";
 import { SectionHeading } from "./section-heading";
+import { OfficeMap } from "./office-map";
 import { Button } from "@/components/ui/button";
 
 type Status = "idle" | "submitting" | "done";
@@ -56,7 +57,7 @@ export function QuoteSection() {
   return (
     <section
       id="quote"
-      className="relative scroll-mt-16 overflow-hidden bg-gradient-to-b from-background to-secondary/40 py-20 sm:py-24 lg:py-28"
+      className="relative scroll-mt-16 overflow-hidden bg-gradient-to-b from-background to-secondary/40 py-12 sm:py-16 lg:py-20"
     >
       <div className="pointer-events-none absolute -right-32 top-0 h-96 w-96 rounded-full bg-gold/15 blur-3xl" />
       <div className="pointer-events-none absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
@@ -68,9 +69,9 @@ export function QuoteSection() {
           description="Start your journey with a free rapid discovery — tell us about your goals and we'll respond within one business day with a tailored approach and engagement model."
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-5">
+        <div className="mx-auto mt-8 w-full max-w-5xl space-y-6">
           {/* Form */}
-          <div className="lg:col-span-3">
+          <div className="mx-auto w-full max-w-4xl">
             <form
               onSubmit={submit}
               className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
@@ -229,9 +230,8 @@ export function QuoteSection() {
             </form>
           </div>
 
-          {/* Side contact card */}
-          <aside className="lg:col-span-2">
-            <div className="flex h-full flex-col gap-4">
+          <div id="contact-info" className="grid scroll-mt-20 gap-6 md:grid-cols-2">
+            <aside>
               <div className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   Talk to a case officer
@@ -256,33 +256,43 @@ export function QuoteSection() {
                     href={CONTACT.websiteHref}
                   />
                   <ContactRow
+                    icon={<Globe className="h-4 w-4" />}
+                    label="Contact page"
+                    value="View contact details"
+                    href="/contact"
+                  />
+                  <ContactRow
                     icon={<MapPin className="h-4 w-4" />}
                     label="London HQ"
                     value={CONTACT.addressLines.join(", ")}
                   />
+                  <ContactRow
+                    icon={<MapPin className="h-4 w-4" />}
+                    label="Dallas office"
+                    value={CONTACT.dallasOffice}
+                  />
                 </div>
-                <p className="mt-4 text-[11px] text-muted-foreground">
-                  {CONTACT.region}
-                </p>
               </div>
+            </aside>
 
-              <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-primary p-6 text-primary-foreground">
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/30 blur-2xl" />
-                <Sparkles className="relative h-5 w-5 text-gold" />
-                <p className="relative mt-3 text-lg font-semibold leading-snug">
-                  Why teams choose LSAI Quantum
-                </p>
-                <ul className="relative mt-4 space-y-2 text-sm text-primary-foreground/85">
-                  {WHY_CHOOSE_US.map((r) => (
-                    <li key={r.title} className="flex items-start gap-2">
-                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gold" />
-                      {r.body}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </aside>
+            <OfficeMap />
+          </div>
+
+          <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-primary p-6 text-primary-foreground">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/30 blur-2xl" />
+            <Sparkles className="relative h-5 w-5 text-gold" />
+            <p className="relative mt-3 text-lg font-semibold leading-snug">
+              Why teams choose LSAI Quantum
+            </p>
+            <ul className="relative mt-4 space-y-2 text-sm text-primary-foreground/85">
+              {WHY_CHOOSE_US.map((r) => (
+                <li key={r.title} className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gold" />
+                  {r.body}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

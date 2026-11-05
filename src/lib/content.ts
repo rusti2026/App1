@@ -343,11 +343,12 @@ export const CONTACT = {
   emailAlt: "steve@lsaiquantum.com",
   website: "www.lsaiquantum.com",
   websiteHref: "https://lsaiquantum.com",
+  contactHref: "https://lsaiquantum.com/contact.html",
+  dallasOffice: "Dallas, Texas",
   addressLines: [
     "#27 Bissenden House, Selbourne Avenue",
     "Hounslow, London, England TW3 1DY",
   ],
-  region: "Also: LSAI Quantum Inc, Dallas, Texas",
   hotline: "Hotline 24/7",
 };
 

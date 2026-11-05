@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Phone, Sparkles, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CONTACT } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 
 const LINKS = [
@@ -12,6 +12,7 @@ const LINKS = [
   { href: "#why-choose-us", label: "Why Choose Us" },
   { href: "#customization", label: "Engagement" },
   { href: "#case-studies", label: "Case Studies" },
+  { href: "#contact-info", label: "Contact" },
 ];
 
 export function SiteNav() {
@@ -31,61 +32,68 @@ export function SiteNav() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const navLinkClass = cn(
+    "whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-medium transition-colors md:px-2.5 xl:px-3.5 xl:text-sm",
+    "text-muted-foreground hover:bg-secondary hover:text-foreground",
+  );
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "border-b border-border/70 bg-background/85 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent",
+        "fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/90 text-foreground backdrop-blur-xl transition-all duration-300",
+        scrolled && "shadow-sm",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <button
-          type="button"
-          onClick={() => handleNav("#top")}
+        <Link
+          href="/"
+          onClick={(event) => {
+            if (window.location.pathname === "/") {
+              event.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           className="group flex items-center gap-2.5"
           aria-label="LSAI Quantum home"
         >
-          <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4.5 w-4.5" strokeWidth={2.2} />
-            <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-gold ring-2 ring-background" />
-          </span>
           <span className="flex flex-col leading-none">
-            <span className="text-sm font-semibold tracking-tight text-foreground">
+            <span className="text-base font-semibold tracking-tight text-foreground">
               LSAI <span className="text-gold">Quantum</span>
             </span>
             <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
               Engineering Partner
             </span>
           </span>
-        </button>
+        </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
-            <button
-              key={l.href}
-              type="button"
-              onClick={() => handleNav(l.href)}
-              className="rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-            >
-              {l.label}
-            </button>
-          ))}
+        <nav className="hidden items-center gap-0.5 md:flex xl:gap-1">
+          {LINKS.map((l) =>
+            l.href.startsWith("#") ? (
+              <button
+                key={l.href}
+                type="button"
+                onClick={() => handleNav(l.href)}
+                className={navLinkClass}
+              >
+                {l.label}
+              </button>
+            ) : (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={navLinkClass}
+              >
+                {l.label}
+              </Link>
+            ),
+          )}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <a
-            href={CONTACT.phoneHref}
-            className="hidden items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 lg:flex"
-          >
-            <Phone className="h-3.5 w-3.5 text-primary" />
-            {CONTACT.phone}
-          </a>
+        <div className="hidden items-center gap-2 lg:flex">
           <Button
             size="sm"
             onClick={() => handleNav("#quote")}
-            className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
           >
             Book Appointment
           </Button>
@@ -111,19 +119,30 @@ export function SiteNav() {
             className="overflow-hidden border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4">
-              {LINKS.map((l) => (
-                <button
-                  key={l.href}
-                  type="button"
-                  onClick={() => handleNav(l.href)}
-                  className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
-                >
-                  {l.label}
-                </button>
-              ))}
+              {LINKS.map((l) =>
+                l.href.startsWith("#") ? (
+                  <button
+                    key={l.href}
+                    type="button"
+                    onClick={() => handleNav(l.href)}
+                    className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
+                  >
+                    {l.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
+                  >
+                    {l.label}
+                  </Link>
+                ),
+              )}
               <Button
                 onClick={() => handleNav("#quote")}
-                className="mt-2 w-full rounded-full bg-primary text-primary-foreground"
+                className="mt-2 w-full rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
               >
                 Book Appointment
               </Button>
