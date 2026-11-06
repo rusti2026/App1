@@ -6,13 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 
 const LINKS = [
-  { href: "#what-we-do", label: "What We Do" },
-  { href: "#why-choose-us", label: "Why Choose Us" },
-  { href: "#customization", label: "Engagement" },
-  { href: "#case-studies", label: "Case Studies" },
-  { href: "#contact-info", label: "Contact" },
+  { href: "/#solutions", label: "What We Build" },
+  { href: "/solutions", label: "All Solutions" },
+  { href: "/#quote", label: "Contact" },
 ];
 
 export function SiteNav() {
@@ -28,8 +27,16 @@ export function SiteNav() {
 
   const handleNav = (href: string) => {
     setOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const hashIndex = href.indexOf("#");
+    if (hashIndex !== -1) {
+      const hash = href.slice(hashIndex);
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+    }
+    window.location.assign(href);
   };
 
   const navLinkClass = cn(
@@ -67,46 +74,40 @@ export function SiteNav() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 md:flex xl:gap-1">
-          {LINKS.map((l) =>
-            l.href.startsWith("#") ? (
-              <button
-                key={l.href}
-                type="button"
-                onClick={() => handleNav(l.href)}
-                className={navLinkClass}
-              >
-                {l.label}
-              </button>
-            ) : (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={navLinkClass}
-              >
-                {l.label}
-              </Link>
-            ),
-          )}
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={(event) => {
+                event.preventDefault();
+                handleNav(l.href);
+              }}
+              className={navLinkClass}
+            >
+              {l.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button
             size="sm"
-            onClick={() => handleNav("#quote")}
-            className="rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
+            onClick={() => handleNav("/#quote")}
+            className="hidden rounded-full bg-gold text-gold-foreground hover:bg-gold/90 lg:inline-flex"
           >
             Book Appointment
           </Button>
-        </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/60 text-foreground md:hidden"
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/60 text-foreground md:hidden"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -119,29 +120,21 @@ export function SiteNav() {
             className="overflow-hidden border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4">
-              {LINKS.map((l) =>
-                l.href.startsWith("#") ? (
-                  <button
-                    key={l.href}
-                    type="button"
-                    onClick={() => handleNav(l.href)}
-                    className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
-                  >
-                    {l.label}
-                  </button>
-                ) : (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
-                  >
-                    {l.label}
-                  </Link>
-                ),
-              )}
+              {LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleNav(l.href);
+                  }}
+                  className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground hover:bg-secondary"
+                >
+                  {l.label}
+                </Link>
+              ))}
               <Button
-                onClick={() => handleNav("#quote")}
+                onClick={() => handleNav("/#quote")}
                 className="mt-2 w-full rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
               >
                 Book Appointment

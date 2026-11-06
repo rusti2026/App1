@@ -13,16 +13,18 @@ import {
   Sparkles,
 } from "lucide-react";
 import { CONTACT, SERVICES, WHY_CHOOSE_US } from "@/lib/content";
+import { SOLUTIONS } from "@/lib/solutions";
 import { SectionHeading } from "./section-heading";
 import { OfficeMap } from "./office-map";
 import { Button } from "@/components/ui/button";
 
-type Status = "idle" | "submitting" | "done";
+type Status = "idle" | "submitting" | "done" | "error";
 
 const SERVICE_OPTIONS = ["Help me choose", ...SERVICES.map((s) => s.title)];
 
 export function QuoteSection() {
   const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -35,15 +37,55 @@ export function QuoteSection() {
   const set = (k: keyof typeof form, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === "submitting") return;
+
     setStatus("submitting");
-    window.setTimeout(() => setStatus("done"), 850);
+    setError("");
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "quote",
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          teamSize: Number(form.teamSize) || null,
+          interest: form.service,
+          message: form.message,
+          website: "",
+          source: "homepage-quote",
+        }),
+      });
+
+      const data = (await response.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!response.ok || !data?.ok) {
+        setError(
+          data?.error ??
+            "We could not send your request. Please try again or email us directly.",
+        );
+        setStatus("error");
+        return;
+      }
+
+      setStatus("done");
+    } catch {
+      setError(
+        "A network error interrupted the request. Please try again or email us directly.",
+      );
+      setStatus("error");
+    }
   };
 
   const reset = () => {
     setStatus("idle");
+    setError("");
     setForm({
       name: "",
       email: "",
@@ -115,9 +157,21 @@ export function QuoteSection() {
                     onChange={(e) => set("service", e.target.value)}
                     className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary"
                   >
-                    {SERVICE_OPTIONS.map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
+                    <option>Help me choose</option>
+                    <optgroup label="Frontier solutions">
+                      {SOLUTIONS.map((solution) => (
+                        <option key={solution.slug} value={solution.title}>
+                          {solution.title}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Core capabilities">
+                      {SERVICE_OPTIONS.filter((s) => s !== "Help me choose").map(
+                        (s) => (
+                          <option key={s}>{s}</option>
+                        ),
+                      )}
+                    </optgroup>
                   </select>
                 </div>
                 <div className="sm:col-span-2">
@@ -133,6 +187,14 @@ export function QuoteSection() {
               </div>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden"
+                />
                 <Button
                   type="submit"
                   size="lg"
@@ -142,7 +204,7 @@ export function QuoteSection() {
                   {status === "submitting" ? (
                     <>
                       <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground" />
-                      Sending…
+                      Sending...
                     </>
                   ) : (
                     <>
@@ -155,6 +217,21 @@ export function QuoteSection() {
                   No deposit · 1-business-day reply · {CONTACT.hotline}
                 </p>
               </div>
+
+              {status === "error" && error ? (
+                <p
+                  role="alert"
+                  className="mt-4 rounded-xl border border-rose/30 bg-rose/10 px-3.5 py-2.5 text-xs font-medium text-rose-foreground"
+                >
+                  {error}{" "}
+                  <a
+                    href={`mailto:${CONTACT.email}`}
+                    className="underline underline-offset-2"
+                  >
+                    {CONTACT.email}
+                  </a>
+                </p>
+              ) : null}
 
               {/* Slide-in confirmation */}
               <AnimatePresence>
@@ -173,10 +250,10 @@ export function QuoteSection() {
                         </span>
                         <div>
                           <p className="text-base font-semibold text-foreground">
-                            Consultation request received
+                            Request received — we&apos;re on it
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            A case officer will reach you within one business day.
+                            A solution lead will reply within one business day.
                           </p>
                         </div>
                       </div>
@@ -234,7 +311,7 @@ export function QuoteSection() {
             <aside>
               <div className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Talk to a case officer
+                  Talk to a solution lead
                 </p>
                 <div className="mt-4 space-y-3 text-sm">
                   <ContactRow

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,40 +15,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
+  title: "LSAI Quantum - Frontier AI, Quantum, Robotics, Cloud & Security",
   description:
-    "LSAI Quantum is an engineering partner for AI, data, cyber security, cloud & digital transformation. From intelligent automation to predictive analytics, we create AI-driven solutions that redefine industries.",
+    "LSAI Quantum builds frontier systems: quantum computing, enterprise AI agents, humanoid robots for household work, industrial AI for manufacturing, autonomous delivery drones, quantum-optimized shipping and supply chains, and AI-first drug discovery — plus AI transformation, machine learning, cloud engineering and cyber security.",
   keywords: [
     "LSAI Quantum",
-    "AI Transformation",
-    "Digital Transformation",
     "Quantum Computing",
-    "Gen AI",
+    "Enterprise AI Agents",
+    "AI Agents",
+    "Humanoid Robotics",
+    "Household Robots",
+    "Physical AI",
+    "Industrial AI",
+    "Manufacturing AI",
+    "Delivery Drones",
+    "Autonomous Delivery",
+    "Quantum Shipping",
+    "Supply Chain Optimization",
+    "SCM",
+    "Drug Discovery AI",
+    "Medical AI",
     "Machine Learning",
-    "Internet of Things",
-    "Block Chain",
+    "Digital Transformation",
     "Cyber Security",
-    "Cloud Engineering",
-    "Data Analytics",
-    "Managed Services",
   ],
   authors: [{ name: "LSAI Quantum Inc." }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
+    title: "LSAI Quantum - Frontier AI, Quantum, Robotics, Cloud & Security",
     description:
-      "Engineering partner for AI, data, cyber security, cloud & digital transformation. From intelligent automation to predictive analytics.",
+      "Quantum computing, enterprise AI agents, humanoid household robots, industrial AI, delivery drones, quantum-optimized shipping and supply chains, and AI-first drug discovery.",
     url: "https://lsaiquantum.com",
     siteName: "LSAI Quantum",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "LSAI Quantum — Empowering businesses with AI-driven solutions",
+    title: "LSAI Quantum - Frontier AI, Quantum, Robotics, Cloud & Security",
     description:
-      "Engineering partner for AI, data, cyber security, cloud & digital transformation.",
+      "Quantum computing, enterprise AI agents, humanoid household robots, industrial AI, delivery drones, quantum shipping, SCM, medical AI, cloud engineering and cyber security.",
   },
 };
 
@@ -61,8 +69,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

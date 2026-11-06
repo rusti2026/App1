@@ -108,6 +108,20 @@ export const SERVICES: Service[] = [
     body: "Our security-first approach ensures data protection, threat detection, and compliance with global security standards.",
     accent: "rose",
   },
+  {
+    id: "supply-chain-management",
+    title: "Supply Chain Management",
+    domain: "cloud-digital",
+    body: "Connect demand, inventory, sourcing and logistics into one optimized supply chain with real-time visibility and AI-assisted planning.",
+    accent: "gold",
+  },
+  {
+    id: "research-development",
+    title: "Research & Development",
+    domain: "ai-data",
+    body: "Turn research questions into working prototypes with AI-assisted discovery, experiment planning and evidence you can trace.",
+    accent: "primary",
+  },
 ];
 
 export const WHY_CHOOSE_US: { title: string; body: string }[] = [
@@ -319,20 +333,31 @@ export const TEAM = [
 
 export const BLOG_POSTS = [
   {
-    id: "financial-health",
-    title: "Actionable Insights to Strengthen Your Business's Financial Health",
+    id: "enterprise-ai-agents",
+    title: "What enterprise AI agents can - and cannot - do in 2026",
     excerpt:
-      "Optimizing — Whether you're a startup or an established company, having the right financial strategies is essential to long-term success.",
-    author: "Alex Roy",
-    date: "8 December 2025",
+      "Agents are moving from demos to production. The difference is architecture: scoped tools, permission-aware retrieval, evaluation and a human in the loop at the moments that matter.",
+    author: "LSAI Quantum Editorial",
+    date: "12 January 2026",
+    solutionSlug: "enterprise-ai-agents",
   },
   {
-    id: "sound-practices",
-    title: "Building a Stronger Business with Sound Financial Practices",
+    id: "humanoid-robotics",
+    title: "From simulation to the household: the state of humanoid robotics",
     excerpt:
-      "Mastering Financial — The world of business finance is evolving rapidly. Our blog keeps you ahead of the curve by exploring the latest trends.",
-    author: "Alex Roy",
+      "General-purpose robots are learning faster in simulation than in the field. Here is how sim-to-real pipelines, safety limits and fleet telemetry turn a platform into a useful worker.",
+    author: "LSAI Quantum Editorial",
     date: "8 December 2025",
+    solutionSlug: "humanoid-robotics",
+  },
+  {
+    id: "delivery-drones",
+    title: "Autonomous delivery drones: from pilot to operating fleet",
+    excerpt:
+      "Weather-aware dispatch, safe handoff and fleet telemetry decide whether a drone programme scales. Here is what the operations layer has to get right.",
+    author: "LSAI Quantum Editorial",
+    date: "14 November 2025",
+    solutionSlug: "delivery-drones",
   },
 ];
 
@@ -353,11 +378,10 @@ export const CONTACT = {
 };
 
 export const FOOTER_LINKS = [
-  "Who We Are",
-  "Case Study",
-  "Policies",
-  "FAQ",
+  "What We Build",
+  "All Solutions",
   "Contact Us",
+  "Book a discovery",
 ];
 
 // Delivery tiers — a faithful visualization of LSAI's "scale up or down with

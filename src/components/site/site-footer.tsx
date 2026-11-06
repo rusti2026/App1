@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   ArrowUp,
   Globe,
@@ -8,36 +9,44 @@ import {
   Phone,
   Sparkles,
 } from "lucide-react";
-import { CONTACT, TEAM, TRUSTED_BY, FOOTER_LINKS } from "@/lib/content";
+import {
+  CONTACT,
+  TEAM,
+  TRUSTED_BY,
+  FOOTER_LINKS,
+} from "@/lib/content";
+import { SOLUTIONS } from "@/lib/solutions";
 
-// Map LSAI's real footer links to the closest in-page section anchor.
+// Footer quick links mapped to the sections that now exist on the site.
 const LINK_TARGETS: Record<string, string> = {
-  "Who We Are": "#team",
-  "Case Study": "#case-studies",
-  Policies: "#quote",
-  FAQ: "#why-choose-us",
+  "What We Build": "/#solutions",
+  "All Solutions": "/solutions",
   "Contact Us": "/contact",
+  "Book a discovery": "/#quote",
 };
 
 export function SiteFooter() {
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const nav = (href: string) => {
-    if (!href.startsWith("#")) {
-      window.location.assign(href);
-      return;
+    const hashIndex = href.indexOf("#");
+    if (hashIndex !== -1) {
+      const el = document.querySelector(href.slice(hashIndex));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
     }
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.location.assign(href);
   };
 
   return (
     <footer className="mt-auto border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-12">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <div className="flex items-center gap-2.5">
+          <div className="col-span-2 md:col-span-3 lg:col-span-4">
+            <Link href="/" className="flex items-center gap-2.5">
               <span className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <Sparkles className="h-4.5 w-4.5" strokeWidth={2.2} />
                 <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-gold ring-2 ring-background" />
@@ -47,14 +56,16 @@ export function SiteFooter() {
                   LSAI <span className="text-gold">Quantum</span>
                 </span>
                 <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                  Engineering Partner
+                  Frontier Engineering
                 </span>
               </div>
-            </div>
+            </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Empowering businesses with AI-driven solutions. Engineering
-              partner for AI, data, cyber security, cloud &amp; digital
-              transformation.
+              Quantum computing, enterprise AI agents, humanoid household
+              robots, industrial AI, delivery drones, quantum-optimized
+              shipping and supply chains, and AI-first drug discovery — backed
+              by AI transformation, machine learning, cloud engineering and
+              cyber security.
             </p>
 
             <div className="mt-5 space-y-2 text-sm">
@@ -79,18 +90,10 @@ export function SiteFooter() {
                 <Globe className="h-4 w-4 text-primary" />
                 {CONTACT.website}
               </a>
-              <a
-                href="/contact"
-                className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <MapPin className="h-4 w-4 text-primary" />
-                Contact us
-              </a>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="mt-0.5 h-4 w-4 flex-none text-primary" />
                 <span>
-                  London HQ:{" "}
-                  {CONTACT.addressLines[0]}
+                  London HQ: {CONTACT.addressLines[0]}
                   <br />
                   {CONTACT.addressLines[1]}
                 </span>
@@ -100,10 +103,53 @@ export function SiteFooter() {
                 <span>Dallas office: {CONTACT.dallasOffice}</span>
               </div>
             </div>
+
+            <div className="mt-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
+                Clients
+              </p>
+              <ul className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1.5">
+                {TRUSTED_BY.map((c) => (
+                  <li
+                    key={c}
+                    className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/80"
+                  >
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Frontier solutions */}
+          <div className="col-span-2 md:col-span-2 lg:col-span-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
+              Frontier Solutions
+            </p>
+            <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              {SOLUTIONS.map((solution) => (
+                <li key={solution.slug}>
+                  <Link
+                    href={`/solutions/${solution.slug}`}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {solution.shortTitle}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/solutions"
+                  className="text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+                >
+                  All solutions
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Quick links */}
-          <div>
+          <div className="lg:col-span-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
               Quick Links
             </p>
@@ -112,7 +158,7 @@ export function SiteFooter() {
                 <li key={l}>
                   <button
                     type="button"
-                    onClick={() => nav(LINK_TARGETS[l] ?? "#quote")}
+                    onClick={() => nav(LINK_TARGETS[l] ?? "/#quote")}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {l}
@@ -123,7 +169,7 @@ export function SiteFooter() {
           </div>
 
           {/* Team */}
-          <div>
+          <div className="lg:col-span-2">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
               Our Team
             </p>
@@ -138,30 +184,19 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
-
-          {/* Trusted by */}
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground">
-              Clients
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
-              {TRUSTED_BY.map((c) => (
-                <li
-                  key={c}
-                  className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/80"
-                >
-                  {c}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
-            © {new Date().getFullYear()} — LSAI Quantum Inc., All Rights Reserved.
+            © {new Date().getFullYear()} - LSAI Quantum Inc., All Rights Reserved.
           </p>
           <div className="flex items-center gap-3">
+            <Link
+              href="/admin"
+              className="text-[11px] font-medium text-muted-foreground/70 transition-colors hover:text-foreground"
+            >
+              Admin
+            </Link>
             <button
               type="button"
               onClick={toTop}

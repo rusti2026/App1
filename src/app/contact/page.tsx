@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock, Globe, Mail, MapPin, Phone } from "lucide-react";
 import { OfficeMap } from "@/components/site/office-map";
+import { SiteNav } from "@/components/site/site-nav";
+import { SiteFooter } from "@/components/site/site-footer";
+import { ContactForm } from "@/components/site/contact-form";
 import { CONTACT } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact | LSAI Quantum",
-  description: "Contact LSAI Quantum by phone, email, or office location.",
+  description:
+    "Contact LSAI Quantum about quantum computing, enterprise AI agents, humanoid robotics, industrial AI for manufacturing or delivery drones. Book a free rapid discovery.",
 };
 
 const CONTACT_METHODS = [
@@ -48,8 +52,10 @@ const OFFICES = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-secondary/40 to-background px-4 py-10 sm:px-6 sm:py-16">
-      <div className="mx-auto max-w-4xl">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-background via-secondary/40 to-background">
+      <SiteNav />
+      <main className="flex-1 px-4 pb-14 pt-24 sm:px-6 sm:pb-20 sm:pt-28">
+        <div className="mx-auto max-w-4xl">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -66,8 +72,10 @@ export default function ContactPage() {
           Contact
         </h1>
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Talk to a case officer about AI, data, cloud or security work. We
-          reply within one business day and can set up a free rapid discovery.
+          Talk to a solution lead about quantum computing, enterprise AI
+          agents, humanoid household robots, industrial AI for manufacturing or
+          delivery drones. We reply within one business day and can set up a
+          free rapid discovery.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -93,6 +101,10 @@ export default function ContactPage() {
               </span>
             </a>
           ))}
+        </div>
+
+        <div className="mt-4">
+          <ContactForm />
         </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -152,6 +164,8 @@ export default function ContactPage() {
           </Link>
         </div>
       </div>
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
